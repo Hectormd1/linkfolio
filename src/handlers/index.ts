@@ -1,12 +1,32 @@
+import { Request, Response } from 'express'
+import slug from 'slug'
 import User from "../models/User"
+import { hashPassword } from '../utils/auth'
 
-let price = 50
-price // VIDEO 34 
 
-export const createAccount =  async (req, res) => {
+export const createAccount = async (req: Request, res: Response) => {
+    const { email, password } = req.body
+
+    const userExists = await User.findOne({ email })
+
+    if (userExists) {
+        const error = new Error(`El usuario con correo '${email}' ya existe`)
+        return res.status(409).json({ error: error.message })
+    }
+
+    const handle = slug(req.body.handle, '')
+    const handleExists = await User.findOne({ handle })
+    if (handleExists) {
+        const error = new Error(`El usuario con nombre '${handle}' no está disponible`)
+        return res.status(409).json({ error: error.message })
+    }
+
     const user = new User(req.body)
+    user.password = await hashPassword(password)
+    user.handle = handle
+    
 
     await user.save()
 
-    res.send("Registro creado correctamente")
+    res.status(201).send('Registro creado correctamente')
 }
