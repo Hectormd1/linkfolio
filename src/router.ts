@@ -18,7 +18,7 @@ router.post(
     .isLength({ min: 8 })
     .withMessage("El password es muy corto, debe contener al menos 8 caracteres"),
   (req: Request, res: Response) => {
-    createAccount
+    createAccount(req, res)
   }
 )
 
@@ -29,7 +29,7 @@ router.post(
     .notEmpty()
     .withMessage("El password es obligatorio"),
   (req: Request, res: Response) => {
-    login
+    login(req, res)
   }
 )
 
