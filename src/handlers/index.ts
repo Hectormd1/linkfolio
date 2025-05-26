@@ -46,11 +46,7 @@ export const createAccount = async (
 
 export const login = async (req: Request, res: Response) => {
   // Manejar errores
-  let errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    console.log(errors)
-    return res.status(400).json({ errors: errors.array() })
-  }
+  
 
   const { email, password } = req.body
 
