@@ -4,13 +4,11 @@ export default function LoginView() {
   return (
     <>
       <h1 className="text-4xl text-white font-blod">Iniciar sesion</h1>
-      <nav className="mt-10"></nav>
-      <nav>
+      <nav className="mt-10">
         <Link
           className="text-center text-white text-lg block"
           to="/auth/register"
-        >
-          ¿No tienes cuenta? Crea una aquí.
+        >¿No tienes cuenta? Crea una aquí.
         </Link>
       </nav>
     </>
