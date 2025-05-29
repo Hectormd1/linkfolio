@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios, { isAxiosError } from "axios";
+import type { RegisterForm } from "../types/index";
 import ErrorMessage from "../components/ErrorMessage";
 
 export default function RegisterView() {
-  const initialValues = {
+  const initialValues: RegisterForm = {
     name: "",
     email: "",
     handle: "",
@@ -15,16 +17,24 @@ export default function RegisterView() {
     watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({defaultValues: initialValues});
+  } = useForm({ defaultValues: initialValues });
 
-  console.log(errors);
+  const password = watch("password");
 
-  const handleRegister = () => {
-    console.log("desde handleRegister");
+  const handleRegister = async (formData: RegisterForm) => {
+    try {
+      const {data} = await axios.post("http://localhost:4000/auth/register", formData);
+      console.log(data);
+
+    } catch (error) {
+      if(isAxiosError(error)){  
+        console.log(error.response?.data.error);
+      }
+    }
   };
   return (
     <>
-      <h1 className="text-4xl text-white font-blod">Crear cuenta</h1>
+      <h1 className="text-4xl text-white font-bold">Crear cuenta</h1>
       <form
         onSubmit={handleSubmit(handleRegister)}
         className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
@@ -55,6 +65,10 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("email", {
               required: "El email es obligatorio",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "E-mail no válido",
+              },
             })}
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
@@ -72,7 +86,9 @@ export default function RegisterView() {
               required: "El handle es obligatorio",
             })}
           />
-          {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
+          {errors.handle && (
+            <ErrorMessage>{errors.handle.message}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label htmlFor="password" className="text-2xl text-slate-500">
@@ -85,9 +101,15 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password", {
               required: "El password es obligatorio",
+              minLength: {
+                value: 8,
+                message: "El password debe ser de 8 minimo caracteres",
+              },
             })}
           />
-          {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+          {errors.password && (
+            <ErrorMessage>{errors.password.message}</ErrorMessage>
+          )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
           <label
@@ -103,9 +125,13 @@ export default function RegisterView() {
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("password_confirmation", {
               required: "Repetir el password es obligatorio",
+              validate: (value) =>
+                value === password || "Los passwords no coinciden",
             })}
           />
-          {errors.password_confirmation && <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>}
+          {errors.password_confirmation && (
+            <ErrorMessage>{errors.password_confirmation.message}</ErrorMessage>
+          )}
         </div>
         <input
           type="submit"
