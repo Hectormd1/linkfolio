@@ -1,34 +1,34 @@
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import type { LoginForm } from "../types";
-import ErrorMessage from "../components/ErrorMessage";
-import { isAxiosError } from "axios";
-import { toast } from "sonner";
+import { Link } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import type { LoginForm } from "../types"
+import ErrorMessage from "../components/ErrorMessage"
+import { isAxiosError } from "axios"
+import { toast } from "sonner"
 
-import api from "../config/axios";
+import api from "../config/axios"
 
 export default function LoginView() {
   const initialValues: LoginForm = {
     email: "",
     password: "",
-  };
+  }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: initialValues });
+  } = useForm({ defaultValues: initialValues })
 
   const handleLogin = async (formData: LoginForm) => {
     try {
-      const { data } = await api.post(`/auth/login`, formData);
-      localStorage.setItem("AUTH_TOKEN", data);
+      const { data } = await api.post(`/auth/login`, formData)
+      localStorage.setItem("AUTH_TOKEN", data)
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error(error.response?.data.error);
+        toast.error(error.response?.data.error)
       }
     }
-  };
+  }
 
   return (
     <>
@@ -90,5 +90,5 @@ export default function LoginView() {
         </Link>
       </nav>
     </>
-  );
+  )
 }

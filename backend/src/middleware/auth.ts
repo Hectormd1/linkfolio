@@ -21,6 +21,9 @@ export const authenticate = async (
     const error = new Error("No autorizado")
     return res.status(401).json({ error: error.message })
   }
+  // Creamos un array que se separece mediante el caracter " " y metemos cada division
+  // en 2 variables, la primera ni la declaramos ya que no se necesita, y la segunda 
+  // la duardamos en la variable "token"
   const [, token] = bearer.split(" ")
 
   if (!token) {
@@ -31,7 +34,9 @@ export const authenticate = async (
   try {
     const result = jwt.verify(token, process.env.JWT_SECRET)
     if (typeof result === "object" && result.id) {
-      const user = await User.findById(result.id).select("-password")
+      
+      // Todos los atributos de User excepto password
+      const user = await User.findById(result.id).select("-password") 
       if (!user) {
         const error = new Error("El usuario no existe")
         return res.status(404).json({ error: error.message })

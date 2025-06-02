@@ -29,7 +29,7 @@ export default function RegisterView() {
     try {
       const {data} = await api.post(`/auth/register`, formData);
 
-      const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 1500));
+      const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 1000));
       toast.promise(promise, {
         loading: 'Registrando usuario...',
         success: data
