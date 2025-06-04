@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface IUSer {
+export interface IUSer extends Document {
     handle: string
     name: string
     email: string

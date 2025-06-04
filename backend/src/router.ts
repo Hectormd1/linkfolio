@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express"
 import { body } from "express-validator"
-import { createAccount, getUser, login } from "./handlers"
+import { createAccount, getUser, login, updateProfile } from "./handlers"
 import { handleInputErrors } from "./middleware/validation"
 import { authenticate } from "./middleware/auth"
 
@@ -38,8 +38,28 @@ router.post(
 )
 
 router.get(
-  "/user", (req: Request, res: Response, next: NextFunction) => {authenticate(req, res, next)} ,
-  (req: Request, res: Response) => {getUser(req, res)} 
+  "/user",
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response) => {
+    getUser(req, res)
+  }
+)
+
+router.patch(
+  "/user",
+  body("handle").notEmpty().withMessage("El handle no puede ir vacio"),
+  body("description").notEmpty().withMessage("La descripcion no puede ir vacio"),
+  (req: Request, res: Response, next: NextFunction) => {
+    handleInputErrors(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response) => {
+    updateProfile(req, res)
+  }
 )
 
 export default router

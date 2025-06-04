@@ -1,15 +1,13 @@
 import { useForm } from "react-hook-form"
 import ErrorMessage from "../components/ErrorMessage"
-import { useQueryClient } from "@tanstack/react-query"
-import { getUser } from "../api/DevTreeApi"
+import { useQueryClient, useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
 import type { ProfileForm, User } from "../types"
+import { updateUser } from "../api/DevTreeApi"
 
 export default function ProfileView() {
-  
   const queryClient = useQueryClient()
-  const data: User = queryClient.getQueryData(['user'])!
-  console.log(data);
-  
+  const data: User = queryClient.getQueryData(["user"])!
 
   const {
     register,
@@ -22,9 +20,29 @@ export default function ProfileView() {
     },
   })
 
+  const updateProfileMutation = useMutation({
+    mutationFn: updateUser,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ name: "Sonner" }), 1000)
+        )
+      toast.promise(promise, {
+        loading: "Actualizando usuario...",
+        success: data,
+      })
+
+      // En caso de success actualizamos el componente de Devtree
+      // el apartado de Visitia mi Perfil: /"" invalidando la query de ['user']
+      queryClient.invalidateQueries({ queryKey: ["user"] })
+    },
+  })
 
   const handleUserProfileForm = (formData: ProfileForm) => {
-    console.log(formData)
+    updateProfileMutation.mutate(formData)
   }
 
   return (

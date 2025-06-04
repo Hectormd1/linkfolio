@@ -48,7 +48,7 @@ export default function DevTree({ data }: DevTreeProps) {
           </div>
         </main>
       </div>
-      <Toaster position="top-right" />
+      <Toaster richColors position="top-right" />
     </>
   )
 }

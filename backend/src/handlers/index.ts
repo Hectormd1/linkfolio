@@ -1,6 +1,5 @@
 import { Request, Response } from "express"
 import slug from "slug"
-import jwt from "jsonwebtoken"
 import User from "../models/User"
 import { checkPassword, hashPassword } from "../utils/auth"
 import { validationResult } from "express-validator"
@@ -23,6 +22,11 @@ export const createAccount = async (req: Request, res: Response) => {
     return res.status(409).json({ error: error.message })
   }
 
+  /** Aquí, slug(req.body.handle, "") está convirtiendo el valor ingresado
+   * por el usuario (por ejemplo "Juan Pérez!") en un slug.
+   * El segundo argumento ("") parece indicar que no se usará ningún separador
+   * (por defecto suele ser "-"), por lo tanto:
+   * "Juan Pérez!" → "juanperez" */
   const handle = slug(req.body.handle, "")
   const handleExists = await User.findOne({ handle })
   if (handleExists) {
@@ -68,4 +72,28 @@ export const login = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
   res.json(req.user)
+}
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const { description } = req.body
+    const handle = slug(req.body.handle, "")
+    const handleExists = await User.findOne({ handle })
+    if (handleExists && handleExists.email !== req.user.email) {
+      const error = new Error(
+        `El usuario con nombre '${handle}' no está disponible`
+      )
+      return res.status(409).json({ error: error.message })
+    }
+
+    // Actualizar usuario
+    req.user.description = description
+    req.user.handle = handle
+
+    await req.user.save()
+    res.send('Perfil actualizado correctamente')
+  } catch (e) {
+    const error = new Error("Hubo un error")
+    res.status(500).json({ error: error.message })
+  }
 }
