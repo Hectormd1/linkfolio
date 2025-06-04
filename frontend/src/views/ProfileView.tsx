@@ -1,17 +1,27 @@
 import { useForm } from "react-hook-form"
 import ErrorMessage from "../components/ErrorMessage"
+import { useQueryClient } from "@tanstack/react-query"
+import { getUser } from "../api/DevTreeApi"
+import type { User } from "../types"
 
 export default function ProfileView() {
+  
+  const queryClient = useQueryClient()
+  const data: User = queryClient.getQueryData(['user'])!
+  console.log(data);
+  
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      handle: "",
-      description: "",
+      handle: data.handle,
+      description: data.description,
     },
   })
+
 
   const handleUserProfileForm = (formData) => {
     console.log(formData)
@@ -47,7 +57,9 @@ export default function ProfileView() {
             required: "La Descripción es obligatoria",
           })}
         />
-        {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
+        {errors.description && (
+          <ErrorMessage>{errors.description.message}</ErrorMessage>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-2">

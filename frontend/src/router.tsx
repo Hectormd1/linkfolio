@@ -16,7 +16,7 @@ export default function Router() {
         </Route>
         <Route path="/admin" element={<AppLayout />}>
           <Route index={true} element={<LinkTreeView />} />
-          <Route index={true} path="profile" element={<ProfileView />} />
+          <Route path="profile" element={<ProfileView />} />
         </Route>
       </Routes>
     </BrowserRouter>
