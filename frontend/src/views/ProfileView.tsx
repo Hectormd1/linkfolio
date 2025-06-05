@@ -3,7 +3,7 @@ import ErrorMessage from "../components/ErrorMessage"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import type { ProfileForm, User } from "../types"
-import { updateUser } from "../api/DevTreeApi"
+import { updateUser, uploadImage } from "../api/DevTreeApi"
 
 export default function ProfileView() {
   const queryClient = useQueryClient()
@@ -41,6 +41,38 @@ export default function ProfileView() {
     },
   })
 
+  const uploadImageMutation = useMutation({
+    mutationFn: uploadImage,
+    onError: (error) => {
+      console.log(error);
+      
+      // toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      
+      // const promise = () =>
+      //   new Promise((resolve) =>
+      //     setTimeout(() => resolve({ name: "Sonner" }), 1000)
+      //   )
+      // toast.promise(promise, {
+      //   loading: "Actualizando usuario...",
+      //   success: data,
+      // })
+
+      // En caso de success actualizamos el componente de Devtree
+      // el apartado de Visitia mi Perfil: /"" invalidando la query de ['user']
+      
+      queryClient.invalidateQueries({ queryKey: ["user"] })
+    },
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      console.log(e.target.files[0])
+      uploadImageMutation.mutate(e.target.files[0])
+    }
+  }
   const handleUserProfileForm = (formData: ProfileForm) => {
     updateProfileMutation.mutate(formData)
   }
@@ -88,7 +120,7 @@ export default function ProfileView() {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={() => {}}
+          onChange={handleChange}
         />
       </div>
 
