@@ -44,32 +44,24 @@ export default function ProfileView() {
   const uploadImageMutation = useMutation({
     mutationFn: uploadImage,
     onError: (error) => {
-      console.log(error);
       
-      // toast.error(error.message)
+      toast.error(error.message)
     },
     onSuccess: (data) => {
-      console.log(data);
-      
-      // const promise = () =>
-      //   new Promise((resolve) =>
-      //     setTimeout(() => resolve({ name: "Sonner" }), 1000)
-      //   )
-      // toast.promise(promise, {
-      //   loading: "Actualizando usuario...",
-      //   success: data,
-      // })
-
-      // En caso de success actualizamos el componente de Devtree
-      // el apartado de Visitia mi Perfil: /"" invalidando la query de ['user']
-      
-      queryClient.invalidateQueries({ queryKey: ["user"] })
+      // queryClient.invalidateQueries({ queryKey: ["user"] }) // Optimist Query (lento)
+      queryClient.setQueryData(["user"], (prevData: User) => {
+        return {
+          ...prevData,
+          image: data
+        }
+        
+      })
     },
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      console.log(e.target.files[0])
+      // console.log(e.target.files[0])
       uploadImageMutation.mutate(e.target.files[0])
     }
   }

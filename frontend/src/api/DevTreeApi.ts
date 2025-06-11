@@ -30,8 +30,8 @@ export async function uploadImage(file: File) {
   formData.append("file", file)
 
   try {
-    const { data } = await api.post("/user/image", formData)
-    return data
+    const { data: { image } }: { data: { image: string } } = await api.post("/user/image", formData)
+    return image
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error)
