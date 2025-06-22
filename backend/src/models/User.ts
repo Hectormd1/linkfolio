@@ -7,6 +7,7 @@ export interface IUSer extends Document {
   password: string
   description: string
   image: string
+  links: string
 }
 
 const userScheme = new Schema({
@@ -41,6 +42,10 @@ const userScheme = new Schema({
   image: {
     type: String,
     default: "",
+  },
+  links: {
+    type: String,
+    default: '[]'
   },
 })
 

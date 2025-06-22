@@ -1,11 +1,33 @@
 import { useState } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { social } from "../data/social"
 import DevTreeInput from "../components/DevTreeInput"
 import { isValidUrl } from "../utils"
 import { toast } from "sonner"
+import { updateProfile } from "../api/DevTreeApi"
+import type { User } from "../types"
 
 export default function LinkTreeView() {
   const [devTreeLinks, setDevTreeLinks] = useState(social)
+
+  const queryClient = useQueryClient()
+  const user: User = queryClient.getQueryData(["user"])!
+  const { mutate } = useMutation({
+    mutationFn: updateProfile,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: () => {
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ name: "Sonner" }), 1000)
+        )
+      toast.promise(promise, {
+        loading: "Actualizando usuario...",
+        success: "Actualizado correctamente",
+      })
+    },
+  })
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedLinks = devTreeLinks.map((link) =>
@@ -17,16 +39,22 @@ export default function LinkTreeView() {
   const handleEnableLink = (socialNetwork: string) => {
     const updatedLinks = devTreeLinks.map((link) => {
       if (link.name === socialNetwork) {
-        if(isValidUrl(link.url)){
+        if (isValidUrl(link.url)) {
           return { ...link, enabled: !link.enabled }
-        }else {
-          toast.error('URL no válida')
+        } else {
+          toast.error("URL no válida")
         }
       }
       return link
     })
-    console.log(updatedLinks)
     setDevTreeLinks(updatedLinks)
+
+    queryClient.setQueryData(["user"], (prevData: User) => {
+      return {
+        ...prevData,
+        links: JSON.stringify(updatedLinks),
+      }
+    })
   }
 
   return (
@@ -40,6 +68,12 @@ export default function LinkTreeView() {
             handleEnableLink={handleEnableLink}
           />
         ))}
+        <button
+          className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded font-bold"
+          onClick={() => mutate(user)}
+        >
+          Guardar cambios
+        </button>
       </div>
     </>
   )
