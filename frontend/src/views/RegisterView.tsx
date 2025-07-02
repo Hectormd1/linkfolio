@@ -1,44 +1,49 @@
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { isAxiosError } from "axios";
-import {toast} from 'sonner'
-import type { RegisterForm } from "../types/index";
-import ErrorMessage from "../components/ErrorMessage";
-import api from "../config/axios";
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { isAxiosError } from "axios"
+import { toast } from "sonner"
+import type { RegisterForm } from "../types/index"
+import ErrorMessage from "../components/ErrorMessage"
+import api from "../config/axios"
 
 export default function RegisterView() {
+  const location = useLocation()  
+  const navigate = useNavigate()
 
   const initialValues: RegisterForm = {
     name: "",
     email: "",
-    handle: "",
+    handle: location?.state?.handle || "",
     password: "",
     password_confirmation: "",
-  };
+  }
   const {
     register,
     watch,
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValues: initialValues });
+  } = useForm({ defaultValues: initialValues })
 
   const password = watch("password")
 
   const handleRegister = async (formData: RegisterForm) => {
     try {
-      const {data} = await api.post(`/auth/register`, formData);
+      const { data } = await api.post(`/auth/register`, formData)
 
-      const promise = () => new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 1000));
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ name: "Sonner" }), 1000)
+        )
       toast.promise(promise, {
-        loading: 'Registrando usuario...',
+        loading: "Registrando usuario...",
         success: data
-      });
+      })
       
       reset()
-
+      navigate('/login')
     } catch (error) {
-      if(isAxiosError(error)){  
+      if (isAxiosError(error)) {
         toast.error(error.response?.data.error)
       }
     }
@@ -91,7 +96,7 @@ export default function RegisterView() {
           <input
             id="handle"
             type="text"
-            placeholder="Nombre de usuario: sin espacios"
+            placeholder="Nombre de usuario"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
             {...register("handle", {
               required: "El handle es obligatorio",
@@ -156,5 +161,5 @@ export default function RegisterView() {
         </Link>
       </nav>
     </>
-  );
+  )
 }

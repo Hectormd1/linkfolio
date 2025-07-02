@@ -97,7 +97,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     await req.user.save()
     res.send("Perfil actualizado correctamente")
   } catch (e) {
-    const error = new Error("Hubo un error")
+    const error = new Error("Ha habido un error")
     res.status(500).json({ error: error.message })
   }
 }
@@ -106,14 +106,13 @@ export const uploadImage = async (req: Request, res: Response) => {
   const form = formidable({ multiples: false })
   form.parse(req, (error, fields, files) => {
     const file = files.file[0]
-    console.log(file.filepath)
 
     cloudinary.uploader.upload(
       file.filepath,
       { public_id: uuid() },
       async function (error, result) {
         if (error) {
-          const error = new Error("Hubo un error al subir la imagen")
+          const error = new Error("Ha habido un error al subir la imagen")
           res.status(500).json({ error: error.message })
         }
         if (result) {
@@ -126,7 +125,7 @@ export const uploadImage = async (req: Request, res: Response) => {
   })
   try {
   } catch (e) {
-    const error = new Error("Hubo un error")
+    const error = new Error("Ha habido un error")
     res.status(500).json({ error: error.message })
   }
 }
@@ -134,7 +133,9 @@ export const uploadImage = async (req: Request, res: Response) => {
 export const getUserByHandle = async (req: Request, res: Response) => {
   try {
     const { handle } = req.params
-    const user = await User.findOne({ handle }).select('-_id -password -__v -email')
+    const user = await User.findOne({ handle }).select(
+      "-_id -password -__v -email"
+    )
 
     if (!user) {
       const error = new Error("El usuario no existe")
@@ -143,7 +144,25 @@ export const getUserByHandle = async (req: Request, res: Response) => {
 
     res.json(user)
   } catch (e) {
-    const error = new Error("Hubo un error")
+    const error = new Error("Ha habido un error")
+    res.status(500).json({ error: error.message })
+  }
+}
+
+export const searchByHandle = async (req: Request, res: Response) => {
+  try {
+    console.log(req.body.handle)
+    const { handle } = req.body
+    const userExists = await User.findOne({ handle })
+
+    if (userExists) {
+      const error = new Error(`El usuario '${handle}' ya existe`)
+      return res.status(409).json({ error: error.message })
+    }
+
+    res.send(`El usuario '${handle}' está disponible`)
+  } catch (e) {
+    const error = new Error("Ha habido un error")
     res.status(500).json({ error: error.message })
   }
 }

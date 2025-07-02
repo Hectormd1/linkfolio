@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginView from "./views/LoginView";
-import RegisterView from "./views/RegisterView";
-import AuthLoyauts from "./layouts/AuthLoyauts";
-import AppLayout from "./layouts/AppLayout";
-import LinkTreeView from "./views/LinkTreeView";
-import ProfileView from "./views/ProfileView";
-import HandleView from "./views/HandleView";
-import NotFoundView from "./views/NotFoundView";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import LoginView from "./views/LoginView"
+import RegisterView from "./views/RegisterView"
+import AuthLoyauts from "./layouts/AuthLoyauts"
+import AppLayout from "./layouts/AppLayout"
+import LinkTreeView from "./views/LinkTreeView"
+import ProfileView from "./views/ProfileView"
+import HandleView from "./views/HandleView"
+import NotFoundView from "./views/NotFoundView"
+import HomeView from "./views/HomeView"
 
 export default function Router() {
   return (
@@ -23,10 +24,11 @@ export default function Router() {
         <Route path="/:handle" element={<AuthLoyauts />}>
           <Route index={true} element={<HandleView />} />
         </Route>
+        <Route path="/" element={<HomeView />} />
         <Route path="/404" element={<AuthLoyauts />}>
           <Route index={true} element={<NotFoundView />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  );
+  )
 }

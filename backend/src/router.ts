@@ -1,6 +1,14 @@
 import { Router, Request, Response, NextFunction } from "express"
 import { body } from "express-validator"
-import { createAccount, getUser, getUserByHandle, login, updateProfile, uploadImage } from "./handlers"
+import {
+  createAccount,
+  getUser,
+  getUserByHandle,
+  login,
+  searchByHandle,
+  updateProfile,
+  uploadImage,
+} from "./handlers"
 import { handleInputErrors } from "./middleware/validation"
 import { authenticate } from "./middleware/auth"
 
@@ -50,9 +58,6 @@ router.get(
 router.patch(
   "/user",
   body("handle").notEmpty().withMessage("El handle no puede ir vacio"),
-  body("description")
-    .notEmpty()
-    .withMessage("La descripcion no puede ir vacio"),
   (req: Request, res: Response, next: NextFunction) => {
     handleInputErrors(req, res, next)
   },
@@ -84,5 +89,15 @@ router.get(
   }
 )
 
+router.post(
+  "/search",
+  body("handle").notEmpty().withMessage("El handle no puede ir vacio"),
+  (req: Request, res: Response, next: NextFunction) => {
+    handleInputErrors(req, res, next)
+  },
+  (req: Request, res: Response) => {
+    searchByHandle(req, res)
+  }
+)
 
 export default router
