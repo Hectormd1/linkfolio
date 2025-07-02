@@ -126,6 +126,16 @@ export default function LinkTreeView() {
 
   return (
     <>
+    
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button
+            className="bg-cyan-400 p-2 text-lg uppercase text-slate-600 rounded font-bold"
+            style={{ width: "50%" }}
+            onClick={() => mutate(queryClient.getQueryData(["user"])!)}
+          >
+            Guardar cambios
+          </button>
+        </div>
       <div className="space-y-5">
         {devTreeLinks.map((item) => (
           <DevTreeInput
@@ -135,13 +145,6 @@ export default function LinkTreeView() {
             handleEnableLink={handleEnableLink}
           />
         ))}
-        <button
-          className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded font-bold"
-          onClick={() => mutate(queryClient.getQueryData(["user"])!
-)}
-        >
-          Guardar cambios
-        </button>
       </div>
     </>
   )

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import ErrorMessage from "../components/ErrorMessage"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
@@ -8,6 +9,20 @@ import { updateProfile, uploadImage } from "../api/DevTreeApi"
 export default function ProfileView() {
   const queryClient = useQueryClient()
   const data: User = queryClient.getQueryData(["user"])!
+
+  const [handle, setHandle] = useState(data.handle)
+  const [description, setDescription] = useState(data.description)
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null)
+
+  // Detecta cambios
+  const [hasChanges, setHasChanges] = useState(false)
+
+  useEffect(() => {
+    const imageChanged = !!selectedImageFile
+    setHasChanges(
+      handle !== data.handle || description !== data.description || imageChanged
+    )
+  }, [handle, description, selectedImageFile, data.handle, data.description])
 
   const {
     register,
@@ -41,51 +56,79 @@ export default function ProfileView() {
     },
   })
 
-  const uploadImageMutation = useMutation({
-    mutationFn: uploadImage,
-    onError: (error) => {
-      toast.error(error.message)
-    },
-    onSuccess: (data) => {
-      queryClient.setQueryData(["user"], (prevData: User) => ({
-        ...prevData,
-        image: data,
-      }))
-    },
-  })
+  // const uploadImageMutation = useMutation({
+  //   mutationFn: uploadImage,
+  //   onError: (error) => {
+  //     toast.error(error.message)
+  //   },
+  //   onSuccess: (data) => {
+  //     queryClient.setQueryData(["user"], (prevData: User) => ({
+  //       ...prevData,
+  //       image: data,
+  //     }))
+  //   },
+  // })
 
   // Cambios en tiempo real para handle
   const handleHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    queryClient.setQueryData(["user"], (prev: User) => ({
-      ...prev,
-      handle: e.target.value,
-    }))
+    setHandle(e.target.value)
+    // No actualices el cache aquí
   }
 
   // Cambios en tiempo real para description
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    queryClient.setQueryData(["user"], (prev: User) => ({
-      ...prev,
-      description: e.target.value,
-    }))
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value)
+    // No actualices el cache aquí
   }
 
+  // Cambia la imagen solo en el cache para previsualización
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      uploadImageMutation.mutate(e.target.files[0])
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setSelectedImageFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        // Solo actualiza el cache para previsualización en DevTree
+        queryClient.setQueryData(["user"], (prev: User) => ({
+          ...prev,
+          image: reader.result as string,
+        }))
+      }
+      reader.readAsDataURL(file)
     }
   }
-  const handleUserProfileForm = (formData: ProfileForm) => {
-    const user: User = queryClient.getQueryData(["user"])!
-    user.description = formData.description
-    user.handle = formData.handle
-    updateProfileMutation.mutate(user)
+
+  // Al guardar, sube la imagen y guarda la URL real
+  const handleUserProfileForm = async (e: React.FormEvent) => {
+    e.preventDefault()
+    let imageUrl = data.image
+    if (selectedImageFile) {
+      imageUrl = (await uploadImage(selectedImageFile)) ?? ""
+    }
+    updateProfileMutation.mutate({
+      ...data,
+      handle,
+      description,
+      image: imageUrl,
+    })
   }
+
+  useEffect(() => {
+    // Guardamos los datos originales al montar
+    const originalData = { ...data }
+
+    return () => {
+      // Restauramos los datos originales al desmontar (cambiar de vista)
+      queryClient.setQueryData(["user"], originalData)
+    }
+  }, []) // Solo una vez al montar/desmontar
 
   return (
     <form
       className="bg-white p-10 rounded-lg space-y-5"
-      onSubmit={handleSubmit(handleUserProfileForm)}
+      onSubmit={handleUserProfileForm}
     >
       <legend className="text-2xl text-slate-800 text-center">
         Editar Información
@@ -96,9 +139,7 @@ export default function ProfileView() {
           type="text"
           className="border-none bg-slate-100 rounded-lg p-2"
           placeholder="handle o Nombre de Usuario"
-          {...register("handle", {
-            required: "El nombre de usuario es obligatorio",
-          })}
+          value={handle}
           onChange={handleHandleChange}
         />
         {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
@@ -109,9 +150,7 @@ export default function ProfileView() {
         <textarea
           className="border-none bg-slate-100 rounded-lg p-2"
           placeholder="Tu Descripción"
-          {...register("description", {
-            required: "La Descripción es obligatoria",
-          })}
+          value={description}
           onChange={handleDescriptionChange}
         />
         {errors.description && (
@@ -124,18 +163,23 @@ export default function ProfileView() {
         <input
           id="image"
           type="file"
-          name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
           onChange={handleImageChange}
         />
       </div>
 
-      <input
-        type="submit"
-        className="bg-cyan-400 p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-        value="Guardar Cambios"
-      />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <input
+          type="submit"
+          className={`p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer ${
+            hasChanges ? "bg-cyan-400" : "bg-slate-100 cursor-not-allowed"
+          }`}
+          value="Guardar Cambios"
+          disabled={!hasChanges}
+          style={{ width: "50%" }}
+        />
+      </div>
     </form>
   )
 }

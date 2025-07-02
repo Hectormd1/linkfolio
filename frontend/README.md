@@ -53,9 +53,3 @@ export default tseslint.config({
 })
 ```
 
-
-
-TODO
-* cambiar que cuando escribo una descripcion se previsualice
-* cambiar que si pongo una imagen en previsualizar que no se guarde hasta que no de a guardar
-* drag and drop a veces no se cambia de posicion bien y al hacer clic a un enlace, desaparece

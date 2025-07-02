@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom"
 import { Toaster } from "sonner"
-import { DndContext,  closestCenter } from "@dnd-kit/core"
-import type {DragEndEvent} from '@dnd-kit/core'
+import { DndContext, closestCenter } from "@dnd-kit/core"
+import type { DragEndEvent } from "@dnd-kit/core"
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -40,27 +40,25 @@ export default function DevTree({ data }: DevTreeProps) {
       const newIdex = enabledLinks.findIndex((link) => link.id === over.id)
       const order = arrayMove(enabledLinks, prevIndex, newIdex)
 
-      
-      const disableLinks: SocialNetwork[] = JSON.parse(data.links).filter((item: SocialNetwork) => !item.enabled)
-      setEnabledLinks(disableLinks)
-
+      const disableLinks: SocialNetwork[] = JSON.parse(data.links).filter(
+        (item: SocialNetwork) => !item.enabled
+      )
       const links = order.concat(disableLinks)
-      
-      queryClient.setQueryData(['user'], (prevData: User) => {
+      setEnabledLinks(order)
+
+      queryClient.setQueryData(["user"], (prevData: User) => {
         return {
           ...prevData,
-          links: JSON.stringify(links)
+          links: JSON.stringify(links),
         }
       })
-      
-      
     }
   }
 
   return (
     <>
-      <Header/>
-      
+      <Header />
+
       <div className="bg-gray-100  min-h-screen py-10">
         <main className="mx-auto max-w-5xl p-10 md:p-0">
           <NavigationTabs />
@@ -71,7 +69,7 @@ export default function DevTree({ data }: DevTreeProps) {
               target="_blank"
               rel="noreferrer noopener"
             >
-              Visitar Mi Perfil: /{data.handle}
+              Visita Mi Perfil: /{data.handle}
             </Link>
           </div>
 
