@@ -44,24 +44,34 @@ export default function ProfileView() {
   const uploadImageMutation = useMutation({
     mutationFn: uploadImage,
     onError: (error) => {
-      
       toast.error(error.message)
     },
     onSuccess: (data) => {
-      // queryClient.invalidateQueries({ queryKey: ["user"] }) // Optimist Query (lento)
-      queryClient.setQueryData(["user"], (prevData: User) => {
-        return {
-          ...prevData,
-          image: data
-        }
-        
-      })
+      queryClient.setQueryData(["user"], (prevData: User) => ({
+        ...prevData,
+        image: data,
+      }))
     },
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Cambios en tiempo real para handle
+  const handleHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    queryClient.setQueryData(["user"], (prev: User) => ({
+      ...prev,
+      handle: e.target.value,
+    }))
+  }
+
+  // Cambios en tiempo real para description
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    queryClient.setQueryData(["user"], (prev: User) => ({
+      ...prev,
+      description: e.target.value,
+    }))
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      // console.log(e.target.files[0])
       uploadImageMutation.mutate(e.target.files[0])
     }
   }
@@ -69,8 +79,6 @@ export default function ProfileView() {
     const user: User = queryClient.getQueryData(["user"])!
     user.description = formData.description
     user.handle = formData.handle
-    console.log(user);
-    console.log(formData);
     updateProfileMutation.mutate(user)
   }
 
@@ -91,6 +99,7 @@ export default function ProfileView() {
           {...register("handle", {
             required: "El nombre de usuario es obligatorio",
           })}
+          onChange={handleHandleChange}
         />
         {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
       </div>
@@ -103,6 +112,7 @@ export default function ProfileView() {
           {...register("description", {
             required: "La Descripción es obligatoria",
           })}
+          onChange={handleDescriptionChange}
         />
         {errors.description && (
           <ErrorMessage>{errors.description.message}</ErrorMessage>
@@ -117,7 +127,7 @@ export default function ProfileView() {
           name="handle"
           className="border-none bg-slate-100 rounded-lg p-2"
           accept="image/*"
-          onChange={handleChange}
+          onChange={handleImageChange}
         />
       </div>
 

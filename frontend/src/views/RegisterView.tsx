@@ -41,7 +41,7 @@ export default function RegisterView() {
       })
       
       reset()
-      navigate('/login')
+      navigate('/auth/login')
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(error.response?.data.error)

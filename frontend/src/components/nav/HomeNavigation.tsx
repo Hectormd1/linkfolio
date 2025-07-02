@@ -8,7 +8,7 @@ export default function HomeNavigation() {
             to='/auth/login'>Iniciar Sesion
             </Link>
             <Link className='bg-lime-500 text-slate-800 p-2 uppercase font-black text-xs cursor-pointer rounded-lg'
-            to='/auth/login'>Registrarme
+            to='/auth/register'>Registrarme
             </Link>
 
         </>
