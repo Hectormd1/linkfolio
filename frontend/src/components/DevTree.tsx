@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useLocation } from "react-router-dom"
 import { Toaster } from "sonner"
 import { DndContext, closestCenter } from "@dnd-kit/core"
 import type { DragEndEvent } from "@dnd-kit/core"
@@ -55,11 +55,13 @@ export default function DevTree({ data }: DevTreeProps) {
     }
   }
 
+  const location = useLocation()
+  const isLinkTreeView = location.pathname === "/admin"
+
   return (
     <>
       <Header />
-
-      <div className="bg-gray-100  min-h-screen py-10">
+      <div className="bg-gray-100 min-h-screen py-10">
         <main className="mx-auto max-w-5xl p-10 md:p-0">
           <NavigationTabs />
           <div className="flex justify-end">
@@ -90,21 +92,29 @@ export default function DevTree({ data }: DevTreeProps) {
                 {data.description}
               </p>
 
-              <DndContext
-                collisionDetection={closestCenter}
-                onDragEnd={HandleDragEnd}
-              >
+              {isLinkTreeView ? (
+                <DndContext
+                  collisionDetection={closestCenter}
+                  onDragEnd={HandleDragEnd}
+                >
+                  <div className="mt-20 flex flex-col gap-5">
+                    <SortableContext
+                      items={enabledLinks}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {enabledLinks.map((link) => (
+                        <DevtreeLink key={link.name} link={link} />
+                      ))}
+                    </SortableContext>
+                  </div>
+                </DndContext>
+              ) : (
                 <div className="mt-20 flex flex-col gap-5">
-                  <SortableContext
-                    items={enabledLinks}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {enabledLinks.map((link) => (
-                      <DevtreeLink key={link.name} link={link} />
-                    ))}
-                  </SortableContext>
+                  {enabledLinks.map((link) => (
+                    <DevtreeLink key={link.name} link={link} disableDnD />
+                  ))}
                 </div>
-              </DndContext>
+              )}
             </div>
           </div>
         </main>

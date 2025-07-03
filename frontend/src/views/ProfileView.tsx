@@ -25,8 +25,6 @@ export default function ProfileView() {
   }, [handle, description, selectedImageFile, data.handle, data.description])
 
   const {
-    register,
-    handleSubmit,
     formState: { errors },
   } = useForm<ProfileForm>({
     defaultValues: {
@@ -56,23 +54,9 @@ export default function ProfileView() {
     },
   })
 
-  // const uploadImageMutation = useMutation({
-  //   mutationFn: uploadImage,
-  //   onError: (error) => {
-  //     toast.error(error.message)
-  //   },
-  //   onSuccess: (data) => {
-  //     queryClient.setQueryData(["user"], (prevData: User) => ({
-  //       ...prevData,
-  //       image: data,
-  //     }))
-  //   },
-  // })
-
   // Cambios en tiempo real para handle
   const handleHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHandle(e.target.value)
-    // No actualices el cache aquí
   }
 
   // Cambios en tiempo real para description
@@ -80,7 +64,6 @@ export default function ProfileView() {
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setDescription(e.target.value)
-    // No actualices el cache aquí
   }
 
   // Cambia la imagen solo en el cache para previsualización
