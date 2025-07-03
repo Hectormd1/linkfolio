@@ -8,9 +8,11 @@ import {
   searchByHandle,
   updateProfile,
   uploadImage,
+  
 } from "./handlers"
 import { handleInputErrors } from "./middleware/validation"
 import { authenticate } from "./middleware/auth"
+import { createBugReport } from "./handlers/bugReport"
 
 const router = Router()
 
@@ -99,5 +101,7 @@ router.post(
     searchByHandle(req, res)
   }
 )
+
+router.post("/bug/report", createBugReport)
 
 export default router
