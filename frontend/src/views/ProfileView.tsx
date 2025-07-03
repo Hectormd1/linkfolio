@@ -16,6 +16,7 @@ export default function ProfileView() {
 
   // Detecta cambios
   const [hasChanges, setHasChanges] = useState(false)
+  const [hasSaved, setHasSaved] = useState(false)
 
   useEffect(() => {
     const imageChanged = !!selectedImageFile
@@ -39,6 +40,7 @@ export default function ProfileView() {
       toast.error(error.message)
     },
     onSuccess: (data) => {
+      setHasSaved(true) // Marcar como guardado
       const promise = () =>
         new Promise((resolve) =>
           setTimeout(() => resolve({ name: "Sonner" }), 1000)
@@ -99,14 +101,14 @@ export default function ProfileView() {
   }
 
   useEffect(() => {
-    // Guardamos los datos originales al montar
     const originalData = { ...data }
-
     return () => {
-      // Restauramos los datos originales al desmontar (cambiar de vista)
-      queryClient.setQueryData(["user"], originalData)
+      // Solo restaurar si NO se ha guardado
+      if (!hasSaved) {
+        queryClient.setQueryData(["user"], originalData)
+      }
     }
-  }, []) // Solo una vez al montar/desmontar
+  }, [hasSaved]) // Solo una vez al montar/desmontar
 
   return (
     <form
