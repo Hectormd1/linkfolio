@@ -2,9 +2,12 @@ import { useLocation } from "react-router-dom"
 import AdminNavigation from "./nav/AdminNavigation"
 import HomeNavigation from "./nav/HomeNavigation"
 import Logo from "./Logo"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function Header() {
   const location = useLocation()
+  const queryClient = useQueryClient()
+  const user = queryClient.getQueryData(["user"])
 
   return (
     <header className="bg-slate-800 py-5">
@@ -13,7 +16,11 @@ export default function Header() {
           <Logo/>
         </div>
         <nav className="md:w-1/3 md:flex md:justify-end">
-          {location.pathname === "/" ? <HomeNavigation /> : <AdminNavigation />}
+          {location.pathname === "/" 
+            ? user 
+              ? <AdminNavigation /> 
+              : <HomeNavigation /> 
+            : <AdminNavigation />}
         </nav>
       </div>
     </header>

@@ -19,7 +19,7 @@ export default function NavigationTabs() {
   };
 
   return (
-    <div className="mb-5">
+    <div className="mb-2">
       <div className="sm:hidden">
         <label htmlFor="tabs" className="sr-only">
           Select a tab

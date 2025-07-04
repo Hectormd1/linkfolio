@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useState } from "react"
 import BugModal from "../BugModal"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export default function AdminNavigation() {
   const queryClient = useQueryClient()
@@ -10,8 +10,9 @@ export default function AdminNavigation() {
   const [showModal, setShowModal] = useState(false)
   type User = { handle?: string; email?: string }
   const user = queryClient.getQueryData<User>(["user"])
+  const location = useLocation()
 
-  const logout = async () => {
+  const logOut = async () => {
     const promise = () =>
       new Promise((resolve) =>
         setTimeout(() => resolve({ name: "Sonner" }), 2500)
@@ -21,7 +22,14 @@ export default function AdminNavigation() {
     await promise()
     localStorage.removeItem("AUTH_TOKEN")
     queryClient.invalidateQueries({ queryKey: ["user"] })
+    queryClient.resetQueries({ queryKey: ["user"] })
+    console.log("User data cleared from query client")
+    
     navigate("/", { state: { loggedOut: true } })
+  }
+
+  const logIn = async () => {
+    navigate("/admin")
   }
 
   const handleContact = () => {
@@ -54,15 +62,31 @@ export default function AdminNavigation() {
   return (
     <div className="flex items-center gap-4">
       <button
-        className="bg-transparent text-white text-xs font-bold capitalize cursor-pointer border-none p-0 m-0 hover:underline"
+        className="bg-transparent text-white text-xs font-bold uppercase cursor-pointer border-none p-0 m-0 hover:underline"
         style={{ boxShadow: "none" }}
         onClick={handleContact}
       >
         Contacto
       </button>
+      {location.pathname === "/" ? (
+        user ? (
+          <button
+            className="bg-primary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
+            style={{ boxShadow: "none" }}
+            onClick={logIn}
+          >
+            Ir a mi perfil
+          </button>
+        ) : (
+          ""
+        )
+      ) : (
+        ""
+      )}
+
       <button
         className="bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
-        onClick={logout}
+        onClick={logOut}
       >
         Cerrar Sesión
       </button>
