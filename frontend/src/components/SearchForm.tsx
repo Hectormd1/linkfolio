@@ -34,7 +34,7 @@ export default function SearchForm() {
       </h1>
       <p className="text-slate-800 text-xl">
         Únete a mas de 200 mil developers compatiendo sus redes sociales,
-        comparte tu perfil de Tiktok, Facebook, Instagram, YouTube, Github y más
+        comparte tu perfil de TikTok, Facebook, Instagram, YouTube, Github y más
       </p>
 
       <form onSubmit={handleSubmit(handleSearch)} className="space-y-5">
@@ -63,7 +63,7 @@ export default function SearchForm() {
             <p className="text-center text-primary font-black">
               {mutation.data} ir a{" "}
               <Link
-                className="text-primary"
+                className="text-secondary"
                 state={{ handle: slugify(handle) }}
                 to={"/auth/register"}
               >
