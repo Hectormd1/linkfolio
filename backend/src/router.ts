@@ -16,6 +16,11 @@ import { createBugReport } from "./handlers/bugReport"
 
 const router = Router()
 
+// Ping endpoint
+router.get('/ping', (req: Request, res: Response) => {
+  res.send('pong')
+})
+
 // Autenticacion y registro
 router.post(
   "/auth/register",
