@@ -49,7 +49,7 @@ export default function BugModal({ show, onClose, onSend }: BugModalProps) {
             Cancelar
           </button>
           <button
-            className="px-4 py-1 rounded bg-cyan-400 text-slate-800 font-bold cursor-pointer"
+            className="px-4 py-1 rounded bg-primary text-white font-bold cursor-pointer"
             onClick={handleSend}
             disabled={!message.trim()}
           >

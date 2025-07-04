@@ -27,43 +27,58 @@ export default function SearchForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleSearch)} className="space-y-5">
-      <div className="relative flex items-center  bg-white  px-2">
-        <label htmlFor="handle">devtree.com/</label>
+    <>
+      <h1 className="text-6xl font-black">
+        Todas tus <span className="text-primary">Redes Sociales </span>
+        en un enlace
+      </h1>
+      <p className="text-slate-800 text-xl">
+        Únete a mas de 200 mil developers compatiendo sus redes sociales,
+        comparte tu perfil de Tiktok, Facebook, Instagram, YouTube, Github y más
+      </p>
+
+      <form onSubmit={handleSubmit(handleSearch)} className="space-y-5">
+        <div className="relative flex items-center  bg-white  px-2">
+          <label htmlFor="handle">linkfolio.netlify.app/</label>
+          <input
+            type="text"
+            id="handle"
+            className="border-none bg-transparent p-2 focus:ring-0 flex-1"
+            placeholder="Elige tu nombre de usuario"
+            {...register("handle", {
+              required: "Un Nombre de Usuario es obligatorio",
+            })}
+          />
+        </div>
+        {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
+
+        <div className="mt-10">
+          {mutation.isPending && <p className="text-center">Cargando...</p>}
+          {mutation.error && (
+            <p className="text-center text-red-600 font-black">
+              {mutation.error.message}
+            </p>
+          )}
+          {mutation.data && (
+            <p className="text-center text-primary font-black">
+              {mutation.data} ir a{" "}
+              <Link
+                className="text-primary"
+                state={{ handle: slugify(handle) }}
+                to={"/auth/register"}
+              >
+                Registro
+              </Link>
+            </p>
+          )}
+        </div>
+
         <input
-          type="text"
-          id="handle"
-          className="border-none bg-transparent p-2 focus:ring-0 flex-1"
-          placeholder="Elige tu nombre de usuario"
-          {...register("handle", {
-            required: "Un Nombre de Usuario es obligatorio",
-          })}
+          type="submit"
+          className="bg-primary p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
+          value="Obtener mi DevTree"
         />
-      </div>
-      {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
-
-      <div className="mt-10">
-        {mutation.isPending && <p className="text-center">Cargando...</p>}
-        {mutation.error && (
-          <p className="text-center text-red-600 font-black">
-            {mutation.error.message}
-          </p>
-        )}
-        {mutation.data && (
-          <p className="text-center text-cyan-500 font-black">
-            {mutation.data} ir a{" "}
-            <Link className="text-blue-400" state={{ handle: slugify(handle) }} to={"/auth/register"}>
-              Registro
-            </Link>
-          </p>
-        )}
-      </div>
-
-      <input
-        type="submit"
-        className="bg-cyan-400 p-3 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer"
-        value="Obtener mi DevTree"
-      />
-    </form>
+      </form>
+    </>
   )
 }

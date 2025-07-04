@@ -129,7 +129,7 @@ export default function LinkTreeView() {
     
         <div style={{ display: "flex", justifyContent: "center" }}>
           <button
-            className="bg-cyan-400 p-2 text-lg uppercase text-slate-600 rounded font-bold"
+            className="bg-primary p-2 text-lg uppercase text-white rounded font-bold mb-5 shadow-lg"
             style={{ width: "50%" }}
             onClick={() => mutate(queryClient.getQueryData(["user"])!)}
           >

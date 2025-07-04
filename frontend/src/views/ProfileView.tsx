@@ -158,7 +158,7 @@ export default function ProfileView() {
         <input
           type="submit"
           className={`p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer ${
-            hasChanges ? "bg-cyan-400" : "bg-slate-100 cursor-not-allowed"
+            hasChanges ? "bg-primary text-white" : "bg-slate-100 cursor-not-allowed"
           }`}
           value="Guardar Cambios"
           disabled={!hasChanges}

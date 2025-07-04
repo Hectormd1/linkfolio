@@ -27,7 +27,7 @@ export default function NavigationTabs() {
         <select
           id="tabs"
           name="tabs"
-          className="block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+          className="block w-full rounded-md border-gray-300 focus:border-primary focus:ring-primary"
           onChange={handleChange}
         >
           {tabs.map((tab) => (
@@ -47,7 +47,7 @@ export default function NavigationTabs() {
                 to={tab.href}
                 className={classNames(
                   location.pathname === tab.href
-                    ? "border-blue-500 text-blue-500"
+                    ? "border-primary text-primary"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
                   "group inline-flex items-center border-b-2 py-4 px-1 text-xl"
                 )}
@@ -55,7 +55,7 @@ export default function NavigationTabs() {
                 <tab.icon
                   className={classNames(
                     location.pathname === tab.href
-                      ? "text-blue-500"
+                      ? "text-primary"
                       : "text-gray-400 group-hover:text-gray-500",
                     "-ml-0.5 mr-2 h-5 w-5"
                   )}

@@ -2,25 +2,26 @@ import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { useState } from "react"
 import BugModal from "../BugModal"
+import { useNavigate } from "react-router-dom"
 
 export default function AdminNavigation() {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
   type User = { handle?: string; email?: string }
   const user = queryClient.getQueryData<User>(["user"])
 
-  const logout = () => {
-    localStorage.removeItem("AUTH_TOKEN")
-    queryClient.invalidateQueries({ queryKey: ["user"] })
+  const logout = async () => {
     const promise = () =>
       new Promise((resolve) =>
         setTimeout(() => resolve({ name: "Sonner" }), 2500)
       )
 
-    toast.promise(promise, {
-      loading: "Cerrando sesion...",
-      error: "Error",
-    })
+    toast.loading("Cerrando sesión...")
+    await promise()
+    localStorage.removeItem("AUTH_TOKEN")
+    queryClient.invalidateQueries({ queryKey: ["user"] })
+    navigate("/", { state: { loggedOut: true } })
   }
 
   const handleContact = () => {
@@ -60,7 +61,7 @@ export default function AdminNavigation() {
         Contacto
       </button>
       <button
-        className="bg-lime-500 p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
+        className="bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
         onClick={logout}
       >
         Cerrar Sesión

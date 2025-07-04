@@ -10,8 +10,23 @@ export default {
         "home": "url('/bg.svg')"
       },
       backgroundSize: {
-        "home-xl": "50%"
-      }
+        "home-xl": "50%",
+      },
+      screens: {
+        'max-1300': {'max': '1300px'},
+      },
+      colors: {
+        primary: '#2271dc',
+        secondary: '#f68e2a',
+        'cyan-400': '#2271dc',
+        'blue-400': '#2271dc',
+        'cyan-500': '#2271dc',
+        'blue-500': '#2271dc',
+        'green-400': '#f68e2a',
+        'green-500': '#f68e2a',
+        'emerald-400': '#f68e2a',
+        'emerald-500': '#f68e2a',
+      },
     },
   },
   plugins: [
