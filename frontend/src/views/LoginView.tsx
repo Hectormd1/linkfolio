@@ -33,14 +33,14 @@ export default function LoginView() {
 
   return (
     <>
-      <h1 className="text-4xl text-white font-blod">Iniciar sesion</h1>
+      <h1 className="text-4xl text-white font-blod text-center">Iniciar sesion</h1>
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
+        className="bg-white px-5 pb-10 pt-5 rounded-lg space-y-3 mt-10"
         noValidate
       >
-        <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="email" className="text-2xl text-slate-500">
+        <div className="grid grid-cols-1 space-y-2">
+          <label htmlFor="email" className="text-xl text-slate-500">
             E-mail
           </label>
           <input
@@ -58,8 +58,8 @@ export default function LoginView() {
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
-        <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="password" className="text-2xl text-slate-500">
+        <div className="grid grid-cols-1 space-y-2">
+          <label htmlFor="password" className="text-xl text-slate-500">
             Password
           </label>
           <input
@@ -78,7 +78,7 @@ export default function LoginView() {
 
         <input
           type="submit"
-          className="bg-primary p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
+          className={`block mx-auto p-2 text-base w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg`}
           value="Iniciar Sesión"
         />
       </form>

@@ -50,13 +50,13 @@ export default function RegisterView() {
   }
   return (
     <>
-      <h1 className="text-4xl text-white font-bold">Crear cuenta</h1>
+      <h1 className="text-4xl text-white text-center font-blod">Crear cuenta</h1>
       <form
         onSubmit={handleSubmit(handleRegister)}
-        className="bg-white px-5 py-20 rounded-lg space-y-10 mt-10"
+        className="bg-white px-5 pt-5 pb-10 rounded-lg space-y-3 mt-10"
       >
-        <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="name" className="text-2xl text-slate-500">
+        <div className="grid grid-cols-1 space-y-2">
+          <label htmlFor="name" className="text-xl text-slate-500">
             Nombre
           </label>
           <input
@@ -71,7 +71,7 @@ export default function RegisterView() {
           {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="email" className="text-2xl text-slate-500">
+          <label htmlFor="email" className="text-xl text-slate-500">
             E-mail
           </label>
           <input
@@ -90,7 +90,7 @@ export default function RegisterView() {
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </div>
         <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="handle" className="text-2xl text-slate-500">
+          <label htmlFor="handle" className="text-xl text-slate-500">
             Handle
           </label>
           <input
@@ -107,7 +107,7 @@ export default function RegisterView() {
           )}
         </div>
         <div className="grid grid-cols-1 space-y-3">
-          <label htmlFor="password" className="text-2xl text-slate-500">
+          <label htmlFor="password" className="text-xl text-slate-500">
             Password
           </label>
           <input
@@ -130,7 +130,7 @@ export default function RegisterView() {
         <div className="grid grid-cols-1 space-y-3">
           <label
             htmlFor="password_confirmation"
-            className="text-2xl text-slate-500"
+            className="text-xl text-slate-500"
           >
             Repetir Password
           </label>
@@ -151,12 +151,12 @@ export default function RegisterView() {
         </div>
         <input
           type="submit"
-          className="bg-primary p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
+          className={`block mx-auto p-2 text-lg w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg`}
           value="Crear Cuenta"
         />
       </form>
       <nav className="mt-10">
-        <Link className="text-center text-white text-lg block" to="/auth/login">
+        <Link className="text-center text-white text-base block" to="/auth/login">
           Ya tienes cuenta? Inicia sesión.
         </Link>
       </nav>

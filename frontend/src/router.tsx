@@ -8,24 +8,25 @@ import ProfileView from "./views/ProfileView"
 import HandleView from "./views/HandleView"
 import NotFoundView from "./views/NotFoundView"
 import HomeView from "./views/HomeView"
+import { APP_PATHS } from "./utils/paths"
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLoyauts />}>
-          <Route path="/auth/login" element={<LoginView />} />
-          <Route path="/auth/register" element={<RegisterView />} />
+          <Route path={APP_PATHS.AUTH_LOGIN} element={<LoginView />} />
+          <Route path={APP_PATHS.AUTH_REGISTER} element={<RegisterView />} />
         </Route>
-        <Route path="/admin" element={<AppLayout />}>
+        <Route path={APP_PATHS.ADMIN} element={<AppLayout />}>
           <Route index={true} element={<LinkTreeView />} />
           <Route path="profile" element={<ProfileView />} />
         </Route>
-        <Route path="/:handle" element={<AuthLoyauts />}>
+        <Route path={APP_PATHS.HANDLE} element={<AuthLoyauts />}>
           <Route index={true} element={<HandleView />} />
         </Route>
-        <Route path="/" element={<HomeView />} />
-        <Route path="/404" element={<AuthLoyauts />}>
+        <Route path={APP_PATHS.ROOT} element={<HomeView />} />
+        <Route path={APP_PATHS.NOT_FOUND} element={<AuthLoyauts />}>
           <Route index={true} element={<NotFoundView />} />
         </Route>
       </Routes>

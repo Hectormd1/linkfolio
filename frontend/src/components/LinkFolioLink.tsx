@@ -35,7 +35,7 @@ export default function LinkFolioLink({ link, disableDnD }: LinkFolioLinkProps) 
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-5 w-full"
+          className="flex items-center gap-5 w-full transition-all duration-300 ease-in-out hover:scale-105 transform-gpu"
           tabIndex={link.enabled ? 0 : -1}
           style={{ pointerEvents: link.enabled ? "auto" : "none", width: "100%" }}
         >
@@ -48,7 +48,10 @@ export default function LinkFolioLink({ link, disableDnD }: LinkFolioLinkProps) 
           </p>
         </a>
       ) : (
-        <div className="flex items-center gap-5 w-full" style={{ width: "100%" }}>
+        <div
+          className="flex items-center gap-5 w-full transition-all duration-300 ease-in-out hover:scale-105 transform-gpu"
+          style={{ width: "100%" }}
+        >
           <div
             className="w-12 h-12 bg-cover"
             style={{ backgroundImage: `url('/social/icon_${link.name}.svg')` }}
