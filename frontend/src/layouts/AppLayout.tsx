@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 import { Navigate } from "react-router-dom"
-import { getUser } from "../api/DevTreeApi"
+import { getUser } from "../api/LinkFolioApi"
 
-import DevTree from "../components/DevTree"
+import LinkFolio from "../components/LinkFolio"
 
 export default function AppLayout() {
   const { data, isLoading, isError } = useQuery({
@@ -15,5 +15,5 @@ export default function AppLayout() {
   if (isLoading) return "Cargando..."
   if (isError) return <Navigate to={"/auth/login"} />
 
-  if (data) return <DevTree data={data} />
+  if (data) return <LinkFolio data={data} />
 }

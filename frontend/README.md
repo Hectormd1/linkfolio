@@ -1,6 +1,6 @@
-# DevTree Backend
+# LinkFolio Backend
 
-Este es el backend de **DevTree**, una API REST construida con **Express** y **TypeScript** para gestionar usuarios, autenticación y enlaces sociales.
+Este es el backend de **LinkFolio**, una API REST construida con **Express** y **TypeScript** para gestionar usuarios, autenticación y enlaces sociales.
 
 ## Tecnologías principales
 

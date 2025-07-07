@@ -3,12 +3,12 @@ import { CSS } from "@dnd-kit/utilities"
 import { useLocation } from "react-router-dom"
 import type { SocialNetwork } from "../types"
 
-type DevtreeLinkProps = {
+type LinkFolioLinkProps = {
   link: SocialNetwork
   disableDnD?: boolean
 }
 
-export default function DevtreeLink({ link, disableDnD }: DevtreeLinkProps) {
+export default function LinkFolioLink({ link, disableDnD }: LinkFolioLinkProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id: link.id,

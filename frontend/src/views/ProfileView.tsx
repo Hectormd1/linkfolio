@@ -4,7 +4,7 @@ import ErrorMessage from "../components/ErrorMessage"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import type { ProfileForm, User } from "../types"
-import { updateProfile, uploadImage } from "../api/DevTreeApi"
+import { updateProfile, uploadImage } from "../api/LinkFolioApi"
 
 export default function ProfileView() {
   const queryClient = useQueryClient()
@@ -50,7 +50,7 @@ export default function ProfileView() {
         success: data,
       })
 
-      // En caso de success actualizamos el componente de Devtree
+      // En caso de success actualizamos el componente de LinkFolio
       // el apartado de Visitia mi Perfil: /"" invalidando la query de ['user']
       queryClient.invalidateQueries({ queryKey: ["user"] })
     },
@@ -75,7 +75,7 @@ export default function ProfileView() {
       setSelectedImageFile(file)
       const reader = new FileReader()
       reader.onloadend = () => {
-        // Solo actualiza el cache para previsualización en DevTree
+        // Solo actualiza el cache para previsualización en LinkFolio
         queryClient.setQueryData(["user"], (prev: User) => ({
           ...prev,
           image: reader.result as string,
@@ -156,14 +156,16 @@ export default function ProfileView() {
 
       <div style={{ display: "flex", justifyContent: "center" }}>
         <input
-          type="submit"
-          className={`p-2 text-lg w-full uppercase text-slate-600 rounded-lg font-bold cursor-pointer ${
-            hasChanges ? "bg-primary text-white" : "bg-slate-100 cursor-not-allowed"
-          }`}
-          value="Guardar Cambios"
-          disabled={!hasChanges}
-          style={{ width: "50%" }}
-        />
+  type="submit"
+  className={`p-2 text-lg w-full uppercase rounded-lg font-bold transition-all duration-300 ease-in-out ${
+    hasChanges
+      ? "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg"
+      : "bg-slate-100 text-slate-600 cursor-not-allowed"
+  }`}
+  value="Guardar Cambios"
+  disabled={!hasChanges}
+  style={{ width: "50%" }}
+/>
       </div>
     </form>
   )

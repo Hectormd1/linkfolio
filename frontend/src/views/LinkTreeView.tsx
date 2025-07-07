@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { social } from "../data/social"
-import DevTreeInput from "../components/DevTreeInput"
+import LinkFolioInput from "../components/LinkFolioInput"
 import { isValidUrl } from "../utils"
 import { toast } from "sonner"
-import { updateProfile } from "../api/DevTreeApi"
+import { updateProfile } from "../api/LinkFolioApi"
 import type { SocialNetwork, User } from "../types"
 
 export default function LinkTreeView() {
-  const [devTreeLinks, setDevTreeLinks] = useState(social)
+  const [LinkFolioLinks, setLinkFolioLinks] = useState(social)
 
   const queryClient = useQueryClient()
   const user: User = queryClient.getQueryData(["user"])!
@@ -31,7 +31,7 @@ export default function LinkTreeView() {
   })
 
   useEffect(() => {
-    const updatedData = devTreeLinks.map((item) => {
+    const updatedData = LinkFolioLinks.map((item) => {
       const userLink = JSON.parse(user.links).find(
         (link: SocialNetwork) => link.name === item.name
       )
@@ -41,20 +41,20 @@ export default function LinkTreeView() {
       return item
     })
 
-    setDevTreeLinks(updatedData)
+    setLinkFolioLinks(updatedData)
   }, [])
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedLinks = devTreeLinks.map((link) =>
+    const updatedLinks = LinkFolioLinks.map((link) =>
       link.name === e.target.name ? { ...link, url: e.target.value } : link
     )
-    setDevTreeLinks(updatedLinks)
+    setLinkFolioLinks(updatedLinks)
   }
 
   const links: SocialNetwork[] = JSON.parse(user.links)
 
   const handleEnableLink = (socialNetwork: string) => {
-    const updatedLinks = devTreeLinks.map((link) => {
+    const updatedLinks = LinkFolioLinks.map((link) => {
       if (link.name === socialNetwork) {
         if (isValidUrl(link.url)) {
           return { ...link, enabled: !link.enabled }
@@ -64,35 +64,33 @@ export default function LinkTreeView() {
       }
       return link
     })
-    setDevTreeLinks(updatedLinks)
+    setLinkFolioLinks(updatedLinks)
 
     let updatedItems: SocialNetwork[] = []
     const selectedSocialNetwork = updatedLinks.find(
       (link) => link.name === socialNetwork
     )
     if (selectedSocialNetwork?.enabled) {
-      const id = links.filter(link => link.id > 0).length + 1
-      if (links.some(link => link.name === socialNetwork)) {
-        updatedItems = links.map(link =>{
+      const id = links.filter((link) => link.id > 0).length + 1
+      if (links.some((link) => link.name === socialNetwork)) {
+        updatedItems = links.map((link) => {
           if (link.name === socialNetwork) {
             return {
               ...link,
-              enabled:true,
-              id: id
+              enabled: true,
+              id: id,
             }
           } else {
             return link
           }
         })
-        
       } else {
         const newItem = {
-        ...selectedSocialNetwork,
-        id: id
+          ...selectedSocialNetwork,
+          id: id,
+        }
+        updatedItems = [...links, newItem]
       }
-      updatedItems = [...links, newItem]
-      }
-
     } else {
       const indexToUpdated = links.findIndex(
         (link) => link.name === socialNetwork
@@ -104,7 +102,11 @@ export default function LinkTreeView() {
             id: 0,
             enabled: false,
           }
-        } else if (link.id > indexToUpdated && (indexToUpdated !== 0 && link.id === 1)) {
+        } else if (
+          link.id > indexToUpdated &&
+          indexToUpdated !== 0 &&
+          link.id === 1
+        ) {
           return {
             ...link,
             id: link.id - 1,
@@ -126,19 +128,19 @@ export default function LinkTreeView() {
 
   return (
     <>
-    
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button
-            className="bg-primary p-2 text-lg uppercase text-white rounded font-bold mb-5 shadow-lg"
-            style={{ width: "50%" }}
-            onClick={() => mutate(queryClient.getQueryData(["user"])!)}
-          >
-            Guardar cambios
-          </button>
-        </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <button
+          className="bg-primary p-2 text-lg uppercase text-white rounded font-bold mb-5 shadow-lg 
+             transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl transform-gpu"
+          style={{ width: "50%" }}
+          onClick={() => mutate(queryClient.getQueryData(["user"])!)}
+        >
+          Guardar cambios
+        </button>
+      </div>
       <div className="space-y-5">
-        {devTreeLinks.map((item) => (
-          <DevTreeInput
+        {LinkFolioLinks.map((item) => (
+          <LinkFolioInput
             key={item.name}
             item={item}
             handleUrlChange={handleUrlChange}

@@ -1,6 +1,6 @@
-import type { DevtreeLink } from "../types"
+import type { LinkFolioLink } from "../types"
 
-export const social: DevtreeLink[] = [
+export const social: LinkFolioLink[] = [
   { name: "instagram", url: "", enabled: false },
   { name: "threads", url: "", enabled: false },
   { name: "x", url: "", enabled: false },

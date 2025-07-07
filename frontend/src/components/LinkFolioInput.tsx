@@ -1,18 +1,18 @@
-import type { DevtreeLink } from "../types"
+import type { LinkFolioLink } from "../types"
 import { Switch } from "@headlessui/react"
 import { classNames } from "../utils"
 
-type DevTreeInputProps = {
-  item: DevtreeLink
+type LinkFolioInputProps = {
+  item: LinkFolioLink
   handleUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   handleEnableLink: (socialNetwork: string) => void
 }
 
-export default function DevTreeInput({
+export default function LinkFolioInput({
   item,
   handleUrlChange,
   handleEnableLink
-}: DevTreeInputProps) {
+}: LinkFolioInputProps) {
 
   return (
     <div className="bg-white shadow-lg p-5 flex items-center gap-3">

@@ -29,4 +29,4 @@ export type SocialNetwork = {
 
 }
 
-export type DevtreeLink = Pick<SocialNetwork, "name" | "url" | "enabled">
+export type LinkFolioLink = Pick<SocialNetwork, "name" | "url" | "enabled">

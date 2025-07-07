@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form"
 import slugify from "react-slugify"
 import { useMutation } from "@tanstack/react-query"
 import ErrorMessage from "./ErrorMessage"
-import { searchByHandle } from "../api/DevTreeApi"
+import { searchByHandle } from "../api/LinkFolioApi"
 import { Link } from "react-router-dom"
 
 export default function SearchForm() {
@@ -73,11 +73,21 @@ export default function SearchForm() {
           )}
         </div>
 
-        <input
-          type="submit"
-          className="bg-primary p-3 text-lg w-full uppercase text-white rounded-lg font-bold cursor-pointer"
-          value="Obtener mi DevTree"
-        />
+        <div className="flex justify-center">
+          <input
+            type="submit"
+            disabled={!handle.trim()}
+            className={`p-3 text-lg uppercase rounded-lg font-bold transition-all duration-300 ease-in-out transform-gpu
+      ${
+        handle.trim()
+          ? "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-xl shadow-lg"
+          : "bg-slate-200 text-slate-400 cursor-not-allowed"
+      }
+      min-w-[220px] w-1/2 max-w-sm
+    `}
+            value="Obtener mi LinkFolio"
+          />
+        </div>
       </form>
     </>
   )

@@ -8,18 +8,18 @@ import {
   arrayMove,
 } from "@dnd-kit/sortable"
 
-import NavigationTabs from "../components/NavigationsTabs"
+import NavigationTabs from "./NavigationsTabs"
 import type { SocialNetwork, User } from "../types"
 import { useEffect, useState } from "react"
-import DevtreeLink from "./DevtreeLink"
+import LinkFolioLink from "./LinkFolioLink"
 import { useQueryClient } from "@tanstack/react-query"
 import Header from "./Header"
 
-type DevTreeProps = {
+type LinkFolioProps = {
   data: User
 }
 
-export default function DevTree({ data }: DevTreeProps) {
+export default function LinkFolio({ data }: LinkFolioProps) {
   const [enabledLinks, setEnabledLinks] = useState<SocialNetwork[]>(
     JSON.parse(data.links).filter((item: SocialNetwork) => item.enabled)
   )
@@ -103,7 +103,7 @@ export default function DevTree({ data }: DevTreeProps) {
                       strategy={verticalListSortingStrategy}
                     >
                       {enabledLinks.map((link) => (
-                        <DevtreeLink key={link.name} link={link} />
+                        <LinkFolioLink key={link.name} link={link} />
                       ))}
                     </SortableContext>
                   </div>
@@ -111,7 +111,7 @@ export default function DevTree({ data }: DevTreeProps) {
               ) : (
                 <div className="mt-20 flex flex-col gap-5">
                   {enabledLinks.map((link) => (
-                    <DevtreeLink key={link.name} link={link} disableDnD />
+                    <LinkFolioLink key={link.name} link={link} disableDnD />
                   ))}
                 </div>
               )}

@@ -24,7 +24,7 @@ export default function AdminNavigation() {
     queryClient.invalidateQueries({ queryKey: ["user"] })
     queryClient.resetQueries({ queryKey: ["user"] })
     console.log("User data cleared from query client")
-    
+
     navigate("/", { state: { loggedOut: true } })
   }
 
@@ -71,8 +71,8 @@ export default function AdminNavigation() {
       {location.pathname === "/" ? (
         user ? (
           <button
-            className="bg-primary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
-            style={{ boxShadow: "none" }}
+            className="bg-primary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer 
+             shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl transform-gpu"
             onClick={logIn}
           >
             Ir a mi perfil
@@ -85,7 +85,8 @@ export default function AdminNavigation() {
       )}
 
       <button
-        className="bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer"
+        className="bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer 
+             shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl transform-gpu"
         onClick={logOut}
       >
         Cerrar Sesión

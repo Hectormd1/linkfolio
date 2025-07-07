@@ -1,5 +1,5 @@
 {
-  "name": "devtree",
+  "name": "linkfolio",
   "version": "1.0.0",
   "description": "Primer proyecto con Express y TypeScript",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hectormd1/devtree.git"
+    "url": "git+https://github.com/Hectormd1/LinkFolio.git"
   },
   "author": "Hector M D",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Hectormd1/devtree/issues"
+    "url": "https://github.com/Hectormd1/LinkFolio/issues"
   },
-  "homepage": "https://github.com/Hectormd1/devtree#readme",
+  "homepage": "https://github.com/Hectormd1/LinkFolio#readme",
   "dependencies": {
     "-": "^0.0.1",
     "@types/cors": "^2.8.18",
