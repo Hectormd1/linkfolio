@@ -20,3 +20,7 @@ npm run dev         # Inicia el servidor en modo desarrollo (nodemon)
 npm run build       # Compila el código TypeScript a JavaScript
 npm start           # Inicia el servidor en producción (usa dist/)
 ```
+
+TODO
+
+Modificar botones de iniciar sesion y crear cuenta
