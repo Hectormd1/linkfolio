@@ -14,6 +14,7 @@ export default {
       },
       screens: {
         'max-1300': {'max': '1300px'},
+        'max-1750': {'max': '1750px'},
       },
       colors: {
         primary: '#2271dc',

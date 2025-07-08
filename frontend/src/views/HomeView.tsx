@@ -22,9 +22,9 @@ export default function HomeView() {
     <>
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1 bg-gray-100 bg-no-repeat bg-right-top bg-home max-1300:bg-none overflow-hidden flex items-center max-1300:justify-center max-1300:items-center">
+        <main className="flex-1 bg-gray-100 bg-no-repeat bg-right-top bg-home max-1750:bg-none overflow-hidden flex items-center max-1750:justify-center max-1750:items-center">
           <div className="max-w-5xl mx-auto w-full flex items-center">
-            <div className="w-full max-1300:w-full lg:w-1/2 px-10 lg:p-0 space-y-6">
+            <div className="w-full max-1750:w-full lg:w-1/2 px-10 lg:p-0 space-y-6">
               <SearchForm />
             </div>
           </div>

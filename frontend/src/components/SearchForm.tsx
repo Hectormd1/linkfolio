@@ -28,27 +28,29 @@ export default function SearchForm() {
 
   return (
     <>
-      <h1 className="text-6xl font-black">
+      <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center sm:text-left">
         Todas tus <span className="text-primary">Redes Sociales </span>
         en un enlace
       </h1>
-      <p className="text-slate-800 text-xl">
+      <p className="text-slate-800 text-base sm:text-lg md:text-xl text-center sm:text-left">
         Únete a mas de 200 mil developers compatiendo sus redes sociales,
         comparte tu perfil de TikTok, Facebook, Instagram, YouTube, Github y más
       </p>
 
       <form onSubmit={handleSubmit(handleSearch)} className="space-y-5">
-        <div className="relative flex items-center  bg-white  px-2">
-          <label htmlFor="handle">linkfolio.netlify.app/</label>
+        <div className="relative bg-white rounded-lg shadow-md overflow-hidden">
           <input
             type="text"
             id="handle"
-            className="border-none bg-transparent p-2 focus:ring-0 flex-1"
+            className="w-full border-none bg-transparent p-3 md:p-4 focus:ring-0 text-xs md:text-base placeholder-slate-400 pl-[7.4rem] md:pl-[9.6rem]"
             placeholder="Elige tu nombre de usuario"
             {...register("handle", {
               required: "Un Nombre de Usuario es obligatorio",
             })}
           />
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-600 text-xs sm:text-sm md:text-base pointer-events-none">
+            linkfolio.netlify.app/
+          </span>
         </div>
         {errors.handle && <ErrorMessage>{errors.handle.message}</ErrorMessage>}
 
@@ -77,13 +79,13 @@ export default function SearchForm() {
           <input
             type="submit"
             disabled={!handle.trim()}
-            className={`p-3 text-lg uppercase rounded-lg font-bold transition-all duration-300 ease-in-out transform-gpu
+            className={`p-3 text-sm sm:text-base md:text-lg uppercase rounded-lg font-bold transition-all duration-300 ease-in-out transform-gpu
       ${
         handle.trim()
           ? "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-xl shadow-lg"
           : "bg-slate-200 text-slate-400 cursor-not-allowed"
       }
-      min-w-[220px] w-1/2 max-w-sm
+      w-full sm:w-auto min-w-[220px] max-w-sm
     `}
             value="Obtener mi LinkFolio"
           />

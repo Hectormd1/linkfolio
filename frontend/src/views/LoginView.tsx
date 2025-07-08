@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
+import { useState } from "react"
 import type { LoginForm } from "../types"
 import ErrorMessage from "../components/ErrorMessage"
 import { isAxiosError } from "axios"
@@ -8,6 +9,8 @@ import { toast } from "sonner"
 import api from "../config/axios"
 
 export default function LoginView() {
+  const [isLoading, setIsLoading] = useState(false)
+
   const initialValues: LoginForm = {
     email: "",
     password: "",
@@ -21,6 +24,7 @@ export default function LoginView() {
 
   const handleLogin = async (formData: LoginForm) => {
     try {
+      setIsLoading(true)
       const { data } = await api.post(`/auth/login`, formData)
       localStorage.setItem("AUTH_TOKEN", data)
       window.location.href = "/admin"
@@ -28,6 +32,8 @@ export default function LoginView() {
       if (isAxiosError(error)) {
         toast.error(error.response?.data.error)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -76,11 +82,24 @@ export default function LoginView() {
           )}
         </div>
 
-        <input
+        <button
           type="submit"
-          className={`block mx-auto p-2 text-base w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg`}
-          value="Iniciar Sesión"
-        />
+          disabled={isLoading}
+          className={`block mx-auto p-2 text-base w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out ${
+            isLoading
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg"
+          }`}
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center space-x-2">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <span>Iniciando...</span>
+            </div>
+          ) : (
+            "Iniciar Sesión"
+          )}
+        </button>
       </form>
       <nav className="mt-10">
         <Link
