@@ -8,6 +8,7 @@ export default function Header() {
   const location = useLocation()
   const queryClient = useQueryClient()
   const user = queryClient.getQueryData(["user"])
+  const isLoggedIn = !!localStorage.getItem("AUTH_TOKEN") && !!user
 
   return (
     <header className="bg-slate-800 py-5">
@@ -17,7 +18,7 @@ export default function Header() {
         </div>
         <nav className="md:w-1/3 md:flex md:justify-end">
           {location.pathname === "/" 
-            ? user 
+            ? isLoggedIn
               ? <AdminNavigation /> 
               : <HomeNavigation /> 
             : <AdminNavigation />}

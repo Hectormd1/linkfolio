@@ -28,11 +28,11 @@ export default function SearchForm() {
 
   return (
     <>
-      <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-center sm:text-left">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-6xl font-black text-center xl:text-left">
         Todas tus <span className="text-primary">Redes Sociales </span>
         en un enlace
       </h1>
-      <p className="text-slate-800 text-base sm:text-lg md:text-xl text-center sm:text-left">
+      <p className="text-slate-800 text-sm sm:text-base md:text-lg xl:text-xl text-center xl:text-left">
         Únete a mas de 200 mil developers compatiendo sus redes sociales,
         comparte tu perfil de TikTok, Facebook, Instagram, YouTube, Github y más
       </p>
@@ -42,13 +42,13 @@ export default function SearchForm() {
           <input
             type="text"
             id="handle"
-            className="w-full border-none bg-transparent p-3 md:p-4 focus:ring-0 text-xs md:text-base placeholder-slate-400 pl-[7.4rem] md:pl-[9.6rem]"
+            className="w-full border-none bg-transparent p-3 md:p-4 focus:ring-0 text-xs sm:text-sm md:text-base placeholder-slate-400 pl-[6rem] sm:pl-[7.4rem] md:pl-[9.6rem]"
             placeholder="Elige tu nombre de usuario"
             {...register("handle", {
               required: "Un Nombre de Usuario es obligatorio",
             })}
           />
-          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-600 text-xs sm:text-sm md:text-base pointer-events-none">
+          <span className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-slate-600 text-[10px] sm:text-xs md:text-sm xl:text-base pointer-events-none">
             linkfolio.netlify.app/
           </span>
         </div>
