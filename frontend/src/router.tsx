@@ -3,7 +3,7 @@ import LoginView from "./views/LoginView"
 import RegisterView from "./views/RegisterView"
 import AuthLoyauts from "./layouts/AuthLoyauts"
 import AppLayout from "./layouts/AppLayout"
-import LinkTreeView from "./views/LinkTreeView"
+import LinkFolioView from "./views/LinkFolioView"
 import ProfileView from "./views/ProfileView"
 import HandleView from "./views/HandleView"
 import NotFoundView from "./views/NotFoundView"
@@ -19,7 +19,7 @@ export default function Router() {
           <Route path={APP_PATHS.AUTH_REGISTER} element={<RegisterView />} />
         </Route>
         <Route path={APP_PATHS.ADMIN} element={<AppLayout />}>
-          <Route index={true} element={<LinkTreeView />} />
+          <Route index={true} element={<LinkFolioView />} />
           <Route path="profile" element={<ProfileView />} />
         </Route>
         <Route path={APP_PATHS.HANDLE} element={<AuthLoyauts />}>

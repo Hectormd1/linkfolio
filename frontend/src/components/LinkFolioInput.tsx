@@ -15,7 +15,7 @@ export default function LinkFolioInput({
 }: LinkFolioInputProps) {
 
   return (
-    <div className="bg-white shadow-lg p-5">
+    <div className="bg-white shadow-lg p-5 rounded-lg">
       {/* Móvil/tablet: icono y switch centrados en fila, input debajo */}
       <div className="flex flex-col gap-0.5 md:grid md:grid-cols-[auto_1fr_auto] md:items-center md:p-1">
         {/* Icono y switch juntos y centrados en móvil, separados en PC */}

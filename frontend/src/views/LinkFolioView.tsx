@@ -7,7 +7,7 @@ import { toast } from "sonner"
 import { updateProfile } from "../api/LinkFolioApi"
 import type { SocialNetwork, User } from "../types"
 
-export default function LinkTreeView() {
+export default function LinkFolioView() {
   const [LinkFolioLinks, setLinkFolioLinks] = useState(social)
 
   const queryClient = useQueryClient()

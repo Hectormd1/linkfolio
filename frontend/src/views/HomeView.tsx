@@ -13,7 +13,6 @@ export default function HomeView() {
   useEffect(() => {
     if (location.state?.loggedOut && !toastShown.current) {
       toastShown.current = true;
-      toast.success("Sesión cerrada correctamente");
       navigate(".", { replace: true, state: {} });
     }
   }, [location.state, navigate]);

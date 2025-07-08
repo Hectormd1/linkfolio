@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query"
-import { toast } from "sonner"
 import { useState } from "react"
 import BugModal from "../BugModal"
 import { useLocation, useNavigate } from "react-router-dom"
@@ -8,23 +7,19 @@ export default function AdminNavigation() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   type User = { handle?: string; email?: string }
   const user = queryClient.getQueryData<User>(["user"])
   const location = useLocation()
 
   const logOut = async () => {
-    const promise = () =>
-      new Promise((resolve) =>
-        setTimeout(() => resolve({ name: "Sonner" }), 2500)
-      )
-
-    toast.loading("Cerrando sesión...")
-    await promise()
+    setIsLoggingOut(true)
+    // Simula petición logout real
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     localStorage.removeItem("AUTH_TOKEN")
     queryClient.invalidateQueries({ queryKey: ["user"] })
     queryClient.resetQueries({ queryKey: ["user"] })
-    console.log("User data cleared from query client")
-
+    setIsLoggingOut(false)
     navigate("/", { state: { loggedOut: true } })
   }
 
@@ -49,13 +44,14 @@ export default function AdminNavigation() {
         }),
       })
       if (res.ok) {
-        toast.success("¡Gracias por tu reporte! Revisaremos el bug.")
+        // Puedes dejar este toast, ya que es para el bug report, no para logout
+        // toast.success("¡Gracias por tu reporte! Revisaremos el bug.")
         setShowModal(false)
       } else {
-        toast.error("No se pudo enviar el reporte.")
+        // toast.error("No se pudo enviar el reporte.")
       }
     } catch {
-      toast.error("No se pudo enviar el reporte.")
+      // toast.error("No se pudo enviar el reporte.")
     }
   }
 
@@ -85,11 +81,19 @@ export default function AdminNavigation() {
       )}
 
       <button
-        className="bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer 
-             shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl transform-gpu"
+        className={`bg-secondary p-2 text-slate-800 uppercase font-black text-xs rounded-lg cursor-pointer 
+             shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl transform-gpu flex items-center justify-center min-w-[120px]`}
         onClick={logOut}
+        disabled={isLoggingOut}
       >
-        Cerrar Sesión
+        {isLoggingOut ? (
+          <div className="flex items-center justify-center space-x-2">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            <span>Cerrando...</span>
+          </div>
+        ) : (
+          "Cerrar Sesión"
+        )}
       </button>
       <BugModal
         show={showModal}

@@ -18,12 +18,21 @@ export default function ProfileView() {
   const [hasChanges, setHasChanges] = useState(false)
   const [hasSaved, setHasSaved] = useState(false)
 
+  // Guarda los valores originales al montar el componente
+  const [originalData] = useState(() => ({
+    handle: data.handle,
+    description: data.description,
+    image: data.image,
+  }))
+
   useEffect(() => {
     const imageChanged = !!selectedImageFile
     setHasChanges(
-      handle !== data.handle || description !== data.description || imageChanged
+      handle !== originalData.handle ||
+      description !== originalData.description ||
+      imageChanged
     )
-  }, [handle, description, selectedImageFile, data.handle, data.description])
+  }, [handle, description, selectedImageFile, originalData])
 
   const {
     formState: { errors },
@@ -60,13 +69,19 @@ export default function ProfileView() {
   // Cambios en tiempo real para handle
   const handleHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHandle(e.target.value)
+    queryClient.setQueryData(["user"], (prev: User) => ({
+      ...prev,
+      handle: e.target.value,
+    }))
   }
 
   // Cambios en tiempo real para description
-  const handleDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value)
+    queryClient.setQueryData(["user"], (prev: User) => ({
+      ...prev,
+      description: e.target.value,
+    }))
   }
 
   // Cambia la imagen solo en el cache para previsualización
@@ -76,7 +91,6 @@ export default function ProfileView() {
       setSelectedImageFile(file)
       const reader = new FileReader()
       reader.onloadend = () => {
-        // Solo actualiza el cache para previsualización en LinkFolio
         queryClient.setQueryData(["user"], (prev: User) => ({
           ...prev,
           image: reader.result as string,

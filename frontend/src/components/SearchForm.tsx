@@ -63,14 +63,15 @@ export default function SearchForm() {
           )}
           {mutation.data && (
             <p className="text-center text-primary font-black">
-              {mutation.data} ir a{" "}
+              {mutation.data} haz clic en {" "}
               <Link
                 className="text-secondary"
                 state={{ handle: slugify(handle) }}
                 to={"/auth/register"}
               >
-                Registro
+                registro 
               </Link>
+              {" "}para crear tu LinkFolio ahora!!
             </p>
           )}
         </div>

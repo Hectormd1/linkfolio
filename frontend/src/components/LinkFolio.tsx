@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
 import { Toaster } from "sonner"
-import { DndContext, closestCenter } from "@dnd-kit/core"
+import { DndContext, closestCenter, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
 import type { DragEndEvent } from "@dnd-kit/core"
 import {
   SortableContext,
@@ -58,6 +58,11 @@ export default function LinkFolio({ data }: LinkFolioProps) {
   const location = useLocation()
   const isLinkTreeView = location.pathname === "/admin"
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } })
+  )
+
   return (
     <>
       <Header />
@@ -94,6 +99,7 @@ export default function LinkFolio({ data }: LinkFolioProps) {
 
               {isLinkTreeView ? (
                 <DndContext
+                  sensors={sensors}
                   collisionDetection={closestCenter}
                   onDragEnd={HandleDragEnd}
                 >

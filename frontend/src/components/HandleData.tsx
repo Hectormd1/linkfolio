@@ -25,7 +25,7 @@ export default function HandleData({ data }: HandleDataProps) {
               rel="noreferrer noopener"
             >
               <img src={`/social/icon_${link.name}.svg`} alt="imagen red social" className="w-12"/>
-              <p className="text-black capitalize font-bold text-lg">Visita mi: {link.name}</p>
+              <p className="text-black text-lg">Visita mi: <span className="capitalize font-bold">{link.name}</span></p>
             </a>
          ))
          : <p className="text-center">No hay enlaces disponibles en este perfil</p>}
