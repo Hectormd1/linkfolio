@@ -56,7 +56,7 @@ export default function LinkFolio({ data }: LinkFolioProps) {
   }
 
   const location = useLocation()
-  const isLinkTreeView = location.pathname === "/admin"
+  const isLinkFolioView = location.pathname === "/admin"
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -97,7 +97,7 @@ export default function LinkFolio({ data }: LinkFolioProps) {
                 {data.description}
               </p>
 
-              {isLinkTreeView ? (
+              {isLinkFolioView ? (
                 <DndContext
                   sensors={sensors}
                   collisionDetection={closestCenter}
