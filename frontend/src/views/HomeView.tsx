@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import { toast } from "sonner";
 import { Toaster } from "sonner";
 import Header from "../components/Header";
 import SearchForm from "../components/SearchForm";
