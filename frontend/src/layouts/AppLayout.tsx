@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { Navigate } from "react-router-dom"
 import { getUser } from "../api/LinkFolioApi"
+import Loader from "../components/Loader"
 
 import LinkFolio from "../components/LinkFolio"
 
@@ -12,7 +13,9 @@ export default function AppLayout() {
     refetchOnWindowFocus: false,
   })
 
-  if (isLoading) return "Cargando..."
+  if (isLoading) return <Loader />
+  //TODO
+  // quitar pantallazo blanco en pantallas de carga
   if (isError) return <Navigate to={"/auth/login"} />
 
   if (data) return <LinkFolio data={data} />

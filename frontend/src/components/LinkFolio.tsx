@@ -69,22 +69,35 @@ export default function LinkFolio({ data }: LinkFolioProps) {
       <div className="bg-gray-100 min-h-screen">
         <main className="mx-auto max-w-5xl p-10 md:pb-8">
           <NavigationTabs />
-          <div className="flex justify-end">
+
+          {/* SOLO PC: visible en md+ */}
+          <div className="justify-end hidden md:flex">
             <Link
-              className="font-bold text-slate-800 text-2xl pr-16 pt-4"
+              className="font-bold text-secondary text-2xl pr-16 pt-4"
               to={`/${data.handle}`}
               target="_blank"
               rel="noreferrer noopener"
             >
-              Visita mi perfil: /{data.handle}
+              Visita mi perfil: <span className="font-bold text-primary text-2xl pr-2 pt-2">/{data.handle}</span>
             </Link>
           </div>
 
           <div className="flex flex-col md:flex-row gap-10 mt-6">
             <div className="flex-1 ">
               <Outlet />
+              {/* SOLO móvil/tablet: visible en <md */}
+              <div className="flex justify-center mt-6 md:hidden">
+                <Link
+                  className="font-bold text-secondary text-xl pr-2 pt-2"
+                  to={`/${data.handle}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Visita mi perfil: <span className="font-bold text-primary text-2xl pr-2 pt-2">/{data.handle}</span>
+                </Link>
+              </div>
             </div>
-            <div className="w-full md:w-96 bg-slate-800 px-5 py-10 space-y-6 rounded-lg">
+            <div className="w-full md:w-96 bg-slate-800 px-5 py-8 space-y-6 rounded-lg">
               <p className="text-4xl text-center text-white">{data.handle}</p>
               {data.image && (
                 <img
