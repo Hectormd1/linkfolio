@@ -106,7 +106,7 @@ export default function LinkFolio({ data }: LinkFolioProps) {
                   className="mx-auto max-w-[250px]"
                 />
               )}
-              <p className="text-lg text-center font-black text-white">
+              <p className="text-lg text-center font-black text-white" style={{ whiteSpace: "pre-line" }}>
                 {data.description}
               </p>
 
