@@ -20,6 +20,13 @@ interface GoogleVerifyCallback {
   ): Promise<void>
 }
 
+console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID)
+console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET)
+console.log("GOOGLE_CALLBACK_URL:", process.env.GOOGLE_CALLBACK_URL)
+console.log("GITHUB_CLIENT_ID:", process.env.GITHUB_CLIENT_ID)
+console.log("GITHUB_CLIENT_SECRET:", process.env.GITHUB_CLIENT_SECRET)
+console.log("GITHUB_CALLBACK_URL:", process.env.GITHUB_CALLBACK_URL)
+
 passport.use(
   new GoogleStrategy(
     {
