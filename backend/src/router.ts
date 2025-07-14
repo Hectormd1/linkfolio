@@ -120,7 +120,7 @@ router.get(
   passport.authenticate("google", { session: false, failureRedirect: "/" }),
   (req, res) => {
     // Genera tu JWT y redirige al frontend con el token
-    const token = generateJWT({ id: req.user._id })
+    const token = generateJWT({ id: (req.user as import("./models/User").IUSer)._id })
     res.redirect(`${process.env.FRONTEND_URL}/auth/social?token=${token}`)
   }
 )
@@ -134,7 +134,7 @@ router.get(
   "/auth/github/callback",
   passport.authenticate("github", { session: false, failureRedirect: "/" }),
   (req, res) => {
-    const token = generateJWT({ id: req.user._id })
+    const token = generateJWT({ id: (req.user as import("./models/User").IUSer)._id })
     res.redirect(`${process.env.FRONTEND_URL}/auth/social?token=${token}`)
   }
 )

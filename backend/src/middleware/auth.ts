@@ -2,14 +2,6 @@ import type { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken"
 import User, { IUSer } from "../models/User"
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: IUSer
-        }
-    }
-}
-
 export const authenticate = async (
   req: Request,
   res: Response,
@@ -21,6 +13,7 @@ export const authenticate = async (
     const error = new Error("No autorizado")
     return res.status(401).json({ error: error.message })
   }
+  
   // Creamos un array que se separece mediante el caracter " " y metemos cada division
   // en 2 variables, la primera ni la declaramos ya que no se necesita, y la segunda 
   // la duardamos en la variable "token"
@@ -34,14 +27,12 @@ export const authenticate = async (
   try {
     const result = jwt.verify(token, process.env.JWT_SECRET)
     if (typeof result === "object" && result.id) {
-      
-      // Todos los atributos de User excepto password
-      const user = await User.findById(result.id).select("-password") 
+      const user = await User.findById(result.id).select("-password")
       if (!user) {
         const error = new Error("El usuario no existe")
         return res.status(404).json({ error: error.message })
       }
-      req.user = user
+      req.user = user // Si necesitas el tipo IUSer, usa: req.user = user as IUSer
       next()
     }
   } catch (error) {

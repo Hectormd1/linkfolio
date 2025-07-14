@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import slug from "slug"
 import formidable from "formidable"
 import { v4 as uuid } from "uuid"
-import User from "../models/User"
+import User, { IUSer } from "../models/User"
 import { checkPassword, hashPassword } from "../utils/auth"
 import { validationResult } from "express-validator"
 import { generateJWT } from "../utils/jwt"
@@ -82,7 +82,8 @@ export const updateProfile = async (req: Request, res: Response) => {
     const { description, links } = req.body
     const handle = slug(req.body.handle, "")
     const handleExists = await User.findOne({ handle })
-    if (handleExists && handleExists.email !== req.user.email) {
+    const user = req.user as IUSer
+    if (handleExists && handleExists.email !== user.email) {
       const error = new Error(
         `El usuario con nombre '${handle}' no está disponible`
       )
@@ -90,11 +91,11 @@ export const updateProfile = async (req: Request, res: Response) => {
     }
 
     // Actualizar usuario
-    req.user.description = description
-    req.user.handle = handle
-    req.user.links = links
+    user.description = description
+    user.handle = handle
+    user.links = links
 
-    await req.user.save()
+    await user.save()
     res.send("Perfil actualizado correctamente")
   } catch (e) {
     const error = new Error("Ha habido un error")
@@ -116,8 +117,9 @@ export const uploadImage = async (req: Request, res: Response) => {
           res.status(500).json({ error: error.message })
         }
         if (result) {
-          req.user.image = result.secure_url
-          await req.user.save()
+          const user = req.user as IUSer
+          user.image = result.secure_url
+          await user.save()
           res.json({ image: result.secure_url })
         }
       }
@@ -171,7 +173,7 @@ export const changeName = async (req: Request, res: Response) => {
   if (!name || name.length < 2 || name.length > 32) {
     return res.status(400).json({ error: "El nombre debe tener entre 2 y 32 caracteres" })
   }
-  const user = await User.findById(req.user._id)
+  const user = await User.findById((req.user as IUSer)._id)
   if (!user) {
     return res.status(404).json({ error: "Usuario no encontrado" })
   }
@@ -190,7 +192,7 @@ export const changeEmail = async (req: Request, res: Response) => {
   if (exists) {
     return res.status(400).json({ error: "El email ya está en uso" })
   }
-  const user = await User.findById(req.user._id)
+  const user = await User.findById((req.user as IUSer)._id)
   if (!user) {
     return res.status(404).json({ error: "Usuario no encontrado" })
   }
@@ -207,7 +209,7 @@ export const changePassword = async (req: Request, res: Response) => {
   if (password !== password_confirmation) {
     return res.status(400).json({ error: "Los passwords no coinciden" })
   }
-  const user = await User.findById(req.user._id)
+  const user = await User.findById((req.user as IUSer)._id)
   if (!user) {
     return res.status(404).json({ error: "Usuario no encontrado" })
   }
@@ -219,7 +221,7 @@ export const changePassword = async (req: Request, res: Response) => {
 export const getProfile = async (req: Request, res: Response) => {
   try {
     // Usa el handle del usuario autenticado
-    const user = await User.findOne({ handle: req.user.handle }).select("name email handle")
+    const user = await User.findOne({ handle: (req.user as IUSer).handle }).select("name email handle")
     if (!user) {
       return res.status(404).json({ error: "Usuario no encontrado" })
     }
@@ -231,7 +233,7 @@ export const getProfile = async (req: Request, res: Response) => {
 
 export const deleteAccount = async (req: Request, res: Response) => {
   const { password } = req.body
-  const user = await User.findById(req.user._id)
+  const user = await User.findById((req.user as IUSer)._id)
   if (!user) return res.status(404).json({ error: "Usuario no encontrado" })
   const valid = await checkPassword(password, user.password)
   if (!valid) return res.status(401).json({ error: "Contraseña incorrecta" })
