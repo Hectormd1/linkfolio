@@ -113,13 +113,21 @@ router.post("/bug/report", createBugReport)
 // Google OAuth
 router.get(
   "/auth/google",
+  (req, res, next) => {
+    console.log("Entrando en /auth/google")
+    next()
+  },
   passport.authenticate("google", { scope: ["profile", "email"] })
 )
 router.get(
   "/auth/google/callback",
+  (req, res, next) => {
+    console.log("Entrando en /auth/google/callback")
+    next()
+  },
   passport.authenticate("google", { session: false, failureRedirect: "/" }),
   (req, res) => {
-    // Genera tu JWT y redirige al frontend con el token
+    console.log("Google callback éxito, usuario:", req.user)
     const token = generateJWT({ id: (req.user as import("./models/User").IUSer)._id })
     res.redirect(`${process.env.FRONTEND_URL}/auth/social?token=${token}`)
   }
@@ -128,12 +136,21 @@ router.get(
 // GitHub OAuth
 router.get(
   "/auth/github",
+  (req, res, next) => {
+    console.log("Entrando en /auth/github")
+    next()
+  },
   passport.authenticate("github", { scope: ["user:email"] })
 )
 router.get(
   "/auth/github/callback",
+  (req, res, next) => {
+    console.log("Entrando en /auth/github/callback")
+    next()
+  },
   passport.authenticate("github", { session: false, failureRedirect: "/" }),
   (req, res) => {
+    console.log("GitHub callback éxito, usuario:", req.user)
     const token = generateJWT({ id: (req.user as import("./models/User").IUSer)._id })
     res.redirect(`${process.env.FRONTEND_URL}/auth/social?token=${token}`)
   }
