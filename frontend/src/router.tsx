@@ -8,6 +8,8 @@ import ProfileView from "./views/ProfileView"
 import HandleView from "./views/HandleView"
 import NotFoundView from "./views/NotFoundView"
 import HomeView from "./views/HomeView"
+import SocialAuthView from "./views/SocialAuthView"
+import AccountView from "./views/AccountView"
 import { APP_PATHS } from "./utils/paths"
 
 export default function Router() {
@@ -17,10 +19,12 @@ export default function Router() {
         <Route element={<AuthLoyauts />}>
           <Route path={APP_PATHS.AUTH_LOGIN} element={<LoginView />} />
           <Route path={APP_PATHS.AUTH_REGISTER} element={<RegisterView />} />
+          <Route path={APP_PATHS.AUTH_SOCIAL} element={<SocialAuthView />} />
         </Route>
         <Route path={APP_PATHS.ADMIN} element={<AppLayout />}>
           <Route index={true} element={<LinkFolioView />} />
-          <Route path="profile" element={<ProfileView />} />
+          <Route path={APP_PATHS.PROFILE} element={<ProfileView />} />
+          <Route path={APP_PATHS.ACCOUNT} element={<AccountView />} />
         </Route>
         <Route path={APP_PATHS.HANDLE} element={<AuthLoyauts />}>
           <Route index={true} element={<HandleView />} />

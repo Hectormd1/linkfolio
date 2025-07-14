@@ -1,9 +1,10 @@
-import { BookmarkSquareIcon, UserIcon } from "@heroicons/react/20/solid";
+import { UserIcon, Cog6ToothIcon,RectangleStackIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const tabs = [
-  { name: "Links", href: "/admin", icon: BookmarkSquareIcon },
+  { name: "Redes", href: "/admin", icon: RectangleStackIcon },
   { name: "Mi Perfil", href: "/admin/profile", icon: UserIcon },
+  { name: "Cuenta", href: "/admin/account", icon: Cog6ToothIcon },
 ];
 
 function classNames(...classes: string[]) {

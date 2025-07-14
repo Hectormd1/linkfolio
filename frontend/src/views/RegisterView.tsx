@@ -11,7 +11,7 @@ export default function RegisterView() {
   const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()  
   const navigate = useNavigate()
-
+  const baseURL = import.meta.env.VITE_API_URL
   const initialValues: RegisterForm = {
     name: "",
     email: "",
@@ -174,6 +174,24 @@ export default function RegisterView() {
             "Crear Cuenta"
           )}
         </button>
+
+        <p className="text-center text-slate-500 my-2">O regístrate con:</p>
+        <div className="flex flex-row gap-2 mt-4 justify-center">
+          <a
+            href={`${baseURL}/auth/google`}
+            className="bg-white text-black font-bold border border-gray-300 rounded-lg p-2 flex items-center justify-center gap-2 hover:bg-gray-100"
+          >
+            <img src="/social/icon_google.svg" alt="Google" className="w-6 h-6" />
+            Google
+          </a>
+          <a
+            href={`${baseURL}/auth/github`}
+            className="bg-white text-black font-bold border border-gray-300 rounded-lg p-2 flex items-center justify-center gap-2 hover:bg-gray-100"
+          >
+            <img src="/social/icon_github.svg" alt="GitHub" className="w-6 h-6" />
+            GitHub
+          </a>
+        </div>
       </form>
       <nav className="mt-10">
         <Link className="text-center text-white text-base block" to="/auth/login">

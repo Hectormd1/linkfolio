@@ -134,7 +134,7 @@ export const getUserByHandle = async (req: Request, res: Response) => {
   try {
     const { handle } = req.params
     const user = await User.findOne({ handle }).select(
-      "-_id -password -__v -email"
+      "-_id -password -__v"
     )
 
     if (!user) {
@@ -164,4 +164,77 @@ export const searchByHandle = async (req: Request, res: Response) => {
     const error = new Error("Ha habido un error")
     res.status(500).json({ error: error.message })
   }
+}
+
+export const changeName = async (req: Request, res: Response) => {
+  const { name } = req.body
+  if (!name || name.length < 2 || name.length > 32) {
+    return res.status(400).json({ error: "El nombre debe tener entre 2 y 32 caracteres" })
+  }
+  const user = await User.findById(req.user._id)
+  if (!user) {
+    return res.status(404).json({ error: "Usuario no encontrado" })
+  }
+  user.name = name
+  await user.save()
+  res.json({ message: "Nombre actualizado correctamente" })
+}
+
+export const changeEmail = async (req: Request, res: Response) => {
+  const { email } = req.body
+  if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ error: "Email no válido" })
+  }
+  // Verifica si el email ya está en uso
+  const exists = await User.findOne({ email })
+  if (exists) {
+    return res.status(400).json({ error: "El email ya está en uso" })
+  }
+  const user = await User.findById(req.user._id)
+  if (!user) {
+    return res.status(404).json({ error: "Usuario no encontrado" })
+  }
+  user.email = email
+  await user.save()
+  res.json({ message: "Email actualizado correctamente" })
+}
+
+export const changePassword = async (req: Request, res: Response) => {
+  const { password, password_confirmation } = req.body
+  if (!password || password.length < 8) {
+    return res.status(400).json({ error: "El password debe tener al menos 8 caracteres" })
+  }
+  if (password !== password_confirmation) {
+    return res.status(400).json({ error: "Los passwords no coinciden" })
+  }
+  const user = await User.findById(req.user._id)
+  if (!user) {
+    return res.status(404).json({ error: "Usuario no encontrado" })
+  }
+  user.password = await hashPassword(password)
+  await user.save()
+  res.json({ message: "Contraseña actualizada correctamente" })
+}
+
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    // Usa el handle del usuario autenticado
+    const user = await User.findOne({ handle: req.user.handle }).select("name email handle")
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" })
+    }
+    res.json({ name: user.name, email: user.email, handle: user.handle })
+  } catch (e) {
+    res.status(500).json({ error: "Ha habido un error" })
+  }
+}
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  const { password } = req.body
+  const user = await User.findById(req.user._id)
+  if (!user) return res.status(404).json({ error: "Usuario no encontrado" })
+  const valid = await checkPassword(password, user.password)
+  if (!valid) return res.status(401).json({ error: "Contraseña incorrecta" })
+  await user.deleteOne()
+  res.json({ message: "Cuenta eliminada correctamente" })
 }

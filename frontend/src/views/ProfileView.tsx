@@ -115,6 +115,7 @@ export default function ProfileView() {
     })
   }
 
+
   useEffect(() => {
     const originalData = { ...data }
     return () => {
@@ -134,8 +135,8 @@ export default function ProfileView() {
         <legend className="text-2xl text-slate-800 text-center">
           Editar Información
         </legend>
-        <div className="grid grid-cols-1 gap-2">
-          <label htmlFor="handle">Handle:</label>
+        <div className="grid grid-cols-1 gap-2  text-black">
+          <label htmlFor="handle" className="font-bold">Handle:</label>
           <input
             type="text"
             className="border-none bg-slate-100 rounded-lg p-2"
@@ -147,11 +148,12 @@ export default function ProfileView() {
         </div>
 
         <div className="grid grid-cols-1 gap-2">
-          <label htmlFor="description">Descripción:</label>
+          <label htmlFor="description" className="font-bold">Descripción:</label>
           <textarea
-            className="border-none bg-slate-100 rounded-lg p-2"
+            className="border-none bg-slate-100 rounded-lg p-2 "
             placeholder="Tu Descripción"
             value={description}
+            rows={6}
             onChange={handleDescriptionChange}
           />
           {errors.description && (
@@ -160,7 +162,7 @@ export default function ProfileView() {
         </div>
 
         <div className="grid grid-cols-1 gap-2">
-          <label htmlFor="image">Imagen:</label>
+          <label htmlFor="image" className="font-bold">Imagen:</label>
           <div className="bg-slate-100 rounded-lg p-2 flex items-center gap-3">
             <label
               htmlFor="image"

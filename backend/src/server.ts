@@ -4,9 +4,13 @@ import 'dotenv/config'
 import router from './router'
 import { connectDB } from './config/db'
 import { corsConfig } from './config/cors'
+import passport from "./config/passport"
+
 connectDB()
 
 const app = express()
+
+app.use(passport.initialize())
 
 // CORS
 app.use(cors(corsConfig))

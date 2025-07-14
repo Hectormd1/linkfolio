@@ -10,7 +10,7 @@ import api from "../config/axios"
 
 export default function LoginView() {
   const [isLoading, setIsLoading] = useState(false)
-
+  const baseURL = import.meta.env.VITE_API_URL
   const initialValues: LoginForm = {
     email: "",
     password: "",
@@ -100,6 +100,25 @@ export default function LoginView() {
             "Iniciar Sesión"
           )}
         </button>
+
+        {/* AÑADE ESTO AQUÍ */}
+        <div className="flex flex-row gap-2 mt-4 justify-center">
+          <a
+            href={`${baseURL}/auth/google`}
+            className="bg-white text-black font-bold border border-gray-300 rounded-lg p-2 flex items-center justify-center gap-2 hover:bg-gray-100"
+          >
+            <img src="/social/icon_google.svg" alt="Google" className="w-6 h-6" />
+            Google
+          </a>
+          <a
+            href={`${baseURL}/auth/github`}
+            className="bg-white text-black font-bold border border-gray-300 rounded-lg p-2 flex items-center justify-center gap-2 hover:bg-gray-100"
+          >
+            <img src="/social/icon_github.svg" alt="GitHub" className="w-6 h-6" />
+            GitHub
+          </a>
+        </div>
+        {/* FIN BLOQUE SOCIAL */}
       </form>
       <nav className="mt-10">
         <Link

@@ -1,7 +1,10 @@
 export const APP_PATHS = {
   AUTH_LOGIN: "/auth/login",
   AUTH_REGISTER: "/auth/register",
+  AUTH_SOCIAL: "/auth/social",
   ADMIN: "/admin",
+  PROFILE: "profile",
+  ACCOUNT: "account",
   HANDLE: "/:handle",
   ROOT: "/",
   NOT_FOUND: "/404"

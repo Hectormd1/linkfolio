@@ -13,7 +13,7 @@ export default function AppLayout() {
     refetchOnWindowFocus: false,
   })
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <div className="bg-gray-100"><Loader /></div>
   //TODO
   // quitar pantallazo blanco en pantallas de carga
   if (isError) return <Navigate to={"/auth/login"} />

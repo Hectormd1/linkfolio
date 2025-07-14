@@ -2,6 +2,8 @@ import { Navigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { getUserByHandle } from "../api/LinkFolioApi"
 import HandleData from "../components/HandleData"
+import Loader from "../components/Loader"
+import { APP_PATHS } from "../utils/paths"
 
 
 export default function HandleView() {
@@ -13,7 +15,7 @@ export default function HandleView() {
     retry: 1,
   })
 
-  if (isLoading) return <p className="text-center text-white ">CARGANDO...</p>
-  if (error) return <Navigate to={"/404"} />
+  if (isLoading) return <Loader />
+  if (error) return <Navigate to={APP_PATHS.NOT_FOUND} />
   if (data) return <HandleData data={data} />
 }

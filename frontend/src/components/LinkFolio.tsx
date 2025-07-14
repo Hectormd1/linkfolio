@@ -98,7 +98,7 @@ export default function LinkFolio({ data }: LinkFolioProps) {
               </div>
             </div>
             <div className="w-full md:w-96 bg-slate-800 px-5 py-8 space-y-6 rounded-lg">
-              <p className="text-4xl text-center text-white">{data.handle}</p>
+              <p className="text-4xl text-center font-bold text-primary">{data.name}</p>
               {data.image && (
                 <img
                   src={data.image}
@@ -108,6 +108,10 @@ export default function LinkFolio({ data }: LinkFolioProps) {
               )}
               <p className="text-lg text-center font-black text-white" style={{ whiteSpace: "pre-line" }}>
                 {data.description}
+              </p>
+              
+              <p className="text-xl text-center font-bold text-secondary" style={{ whiteSpace: "pre-line" }}>
+                📧 {data.email}
               </p>
 
               {isLinkFolioView ? (
