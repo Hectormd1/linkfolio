@@ -11,7 +11,7 @@ connectDB()
 const app = express()
 
 app.use(passport.initialize())
-console.log("Arrancando servidor LinkFolio", passport)
+
 // CORS
 app.use(cors(corsConfig))
 
