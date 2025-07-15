@@ -93,13 +93,14 @@ passport.use(
       if (!email) {
         email = await generateFakeEmail()
       }
-      let user = await User.findOne({ email })
+      // Buscar por email o por handle (username)
+      let user = await User.findOne({ $or: [{ email }, { handle: profile.username }] })
       if (!user) {
         const handle = await generateUniqueHandle(email, profile.username)
         user = await User.create({
           name: profile.displayName || profile.username,
           email,
-          handle, // ahora el handle será el username si existe
+          handle,
           password: "github-oauth",
           description: "",
           image: profile.photos?.[0]?.value || "",
