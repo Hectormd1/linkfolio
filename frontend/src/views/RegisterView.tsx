@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query"
 import type { RegisterForm } from "../types"
 import ErrorMessage from "../components/ErrorMessage"
 import { toast } from "sonner"
-import { login, register } from "../api/LinkFolioApi"
+import { register } from "../api/LinkFolioApi"
 
 export default function RegisterView() {
   const location = useLocation()  
