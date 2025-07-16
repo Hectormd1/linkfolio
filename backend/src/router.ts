@@ -139,8 +139,15 @@ router.get(
   }
 )
 
+router.get("/user/profile", 
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  }, (req: Request, res: Response) => {
+    getProfile(req, res)
+  })
+
 router.post(
-  "/user/change-password",
+  "/user/change/password",
   (req: Request, res: Response, next: NextFunction) => {
     authenticate(req, res, next)
   },
@@ -149,29 +156,21 @@ router.post(
   }
 )
 
-router.post("/user/change-email",
+router.post("/user/change/email",
   (req: Request, res: Response, next: NextFunction) => {
     authenticate(req, res, next)
   }, (req: Request, res: Response) => {
     changeEmail(req, res)
   })
 
-router.post("/user/change-name",
+router.post("/user/change/name",
   (req: Request, res: Response, next: NextFunction) => {
     authenticate(req, res, next)
   }, (req: Request, res: Response) => {
     changeName(req, res)
   })
 
-router.get("/user/profile", 
-  (req: Request, res: Response, next: NextFunction) => {
-    authenticate(req, res, next)
-  }, (req: Request, res: Response) => {
-    getProfile(req, res)
-  })
-
-
-router.post("/user/delete-account",
+router.post("/user/delete/account",
   (req: Request, res: Response, next: NextFunction) => {
     authenticate(req, res, next)
   }, (req: Request, res: Response) => {

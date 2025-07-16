@@ -51,7 +51,7 @@ export default function AccountView() {
   const handleChangeEmail = async (data: any) => {
     setIsChangingEmail(true)
     try {
-      await api.post("/user/change-email", data, {
+      await api.post("/user/change/email", data, {
         headers: { Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN")}` }
       })
       toast.success("Email modificado correctamente", { position: "top-right" })
@@ -73,7 +73,7 @@ export default function AccountView() {
   const handleChangePassword = async (data: any) => {
     setIsChangingPassword(true)
     try {
-      await api.post("/user/change-password", data, {
+      await api.post("/user/change/password", data, {
         headers: { Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN")}` }
       })
       toast.success("Contraseña modificada correctamente", { position: "top-right" })
@@ -90,7 +90,7 @@ export default function AccountView() {
   const handleChangeName = async (data: any) => {
     setIsChangingName(true)
     try {
-      await api.post("/user/change-name", data, {
+      await api.post("/user/change/name", data, {
         headers: { Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN")}` }
       })
       toast.success("Nombre modificado correctamente", { position: "top-right" })
@@ -112,7 +112,7 @@ export default function AccountView() {
   const handleDeleteAccount = async () => {
     setIsDeleting(true)
     try {
-      await api.post("/user/delete-account", { password: deletePassword }, {
+      await api.post("/user/delete/account", { password: deletePassword }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("AUTH_TOKEN")}` }
       })
       toast.success("Cuenta eliminada correctamente", { position: "top-right" })

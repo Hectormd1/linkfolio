@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
 import type { LoginForm } from "../types"
 import ErrorMessage from "../components/ErrorMessage"
-import { isAxiosError } from "axios"
 import { toast } from "sonner"
-
-import api from "../config/axios"
+import { login } from "../api/LinkFolioApi"
 
 export default function LoginView() {
-  const [isLoading, setIsLoading] = useState(false)
   const baseURL = import.meta.env.VITE_API_URL
   const initialValues: LoginForm = {
     email: "",
@@ -22,19 +19,19 @@ export default function LoginView() {
     formState: { errors },
   } = useForm({ defaultValues: initialValues })
 
-  const handleLogin = async (formData: LoginForm) => {
-    try {
-      setIsLoading(true)
-      const { data } = await api.post(`/auth/login`, formData)
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
       localStorage.setItem("AUTH_TOKEN", data)
       window.location.href = "/admin"
-    } catch (error) {
-      if (isAxiosError(error)) {
-        toast.error(error.response?.data.error)
-      }
-    } finally {
-      setIsLoading(false)
-    }
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
+
+  const handleLogin = (formData: LoginForm) => {
+    mutation.mutate(formData)
   }
 
   return (
@@ -84,14 +81,14 @@ export default function LoginView() {
 
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={mutation.isPending}
           className={`block mx-auto p-2 text-base w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out ${
-            isLoading
+            mutation.isPending
               ? "bg-slate-400 cursor-not-allowed"
               : "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg"
           }`}
         >
-          {isLoading ? (
+          {mutation.isPending ? (
             <div className="flex items-center justify-center space-x-2">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
               <span>Iniciando...</span>
@@ -101,7 +98,6 @@ export default function LoginView() {
           )}
         </button>
 
-        {/* AÑADE ESTO AQUÍ */}
         <div className="flex flex-row gap-2 mt-4 justify-center">
           <a
             href={`${baseURL}/auth/google`}
@@ -118,7 +114,6 @@ export default function LoginView() {
             GitHub
           </a>
         </div>
-        {/* FIN BLOQUE SOCIAL */}
       </form>
       <nav className="mt-10">
         <Link

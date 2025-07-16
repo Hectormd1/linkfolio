@@ -1,16 +1,13 @@
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
-import { isAxiosError } from "axios"
-import { toast } from "sonner"
-import type { RegisterForm } from "../types/index"
+import { useMutation } from "@tanstack/react-query"
+import type { RegisterForm } from "../types"
 import ErrorMessage from "../components/ErrorMessage"
-import api from "../config/axios"
+import { toast } from "sonner"
+import { login, register } from "../api/LinkFolioApi"
 
 export default function RegisterView() {
-  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()  
-  const navigate = useNavigate()
   const baseURL = import.meta.env.VITE_API_URL
   const initialValues: RegisterForm = {
     name: "",
@@ -20,38 +17,29 @@ export default function RegisterView() {
     password_confirmation: "",
   }
   const {
-    register,
+    register: registerInput,
     watch,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: initialValues })
 
   const password = watch("password")
 
-  const handleRegister = async (formData: RegisterForm) => {
-    try {
-      setIsLoading(true)
-      const { data } = await api.post(`/auth/register`, formData)
+  const mutation = useMutation({
+    mutationFn: register,
+    onSuccess: (data) => {
+      toast.success(data) // Muestra el mensaje del backend
+      window.location.href = "/auth/login"
+    },
+    onError: (error: any) => {
+      toast.error(error.message)
+    },
+  })
 
-      const promise = () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ name: "Sonner" }), 1000)
-        )
-      toast.promise(promise, {
-        loading: "Registrando usuario...",
-        success: data
-      })
-      
-      reset()
-      navigate('/auth/login')
-    } catch (error) {
-      if (isAxiosError(error)) {
-        toast.error(error.response?.data.error)
-      }
-    } finally {
-      setIsLoading(false)
-    }
+  const handleRegister = (formData: RegisterForm) => {
+    // Solo envía los campos requeridos por la API
+    const { name, handle, email, password } = formData
+    mutation.mutate({ name, handle, email, password })
   }
 
   return (
@@ -70,7 +58,7 @@ export default function RegisterView() {
             type="text"
             placeholder="Tu Nombre"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register("name", {
+            {...registerInput("name", {
               required: "El nombre es obligatorio",
             })}
           />
@@ -85,7 +73,7 @@ export default function RegisterView() {
             type="email"
             placeholder="Email de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register("email", {
+            {...registerInput("email", {
               required: "El email es obligatorio",
               pattern: {
                 value: /\S+@\S+\.\S+/,
@@ -104,7 +92,7 @@ export default function RegisterView() {
             type="text"
             placeholder="Nombre de usuario"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register("handle", {
+            {...registerInput("handle", {
               required: "El handle es obligatorio",
             })}
           />
@@ -121,7 +109,7 @@ export default function RegisterView() {
             type="password"
             placeholder="Password de Registro"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register("password", {
+            {...registerInput("password", {
               required: "El password es obligatorio",
               minLength: {
                 value: 8,
@@ -145,7 +133,7 @@ export default function RegisterView() {
             type="password"
             placeholder="Repetir Password"
             className="bg-slate-100 border-none p-3 rounded-lg placeholder-slate-400"
-            {...register("password_confirmation", {
+            {...registerInput("password_confirmation", {
               required: "Repetir el password es obligatorio",
               validate: (value) =>
                 value === password || "Los passwords no coinciden",
@@ -158,14 +146,14 @@ export default function RegisterView() {
         
         <button
           type="submit"
-          disabled={isLoading}
+          disabled={mutation.isPending}
           className={`block mx-auto p-2 text-lg w-auto uppercase rounded-lg font-bold transition-all duration-300 ease-in-out ${
-            isLoading 
-              ? "bg-slate-400 cursor-not-allowed" 
+            mutation.isPending
+              ? "bg-slate-400 cursor-not-allowed"
               : "bg-primary text-white cursor-pointer hover:scale-105 hover:shadow-lg"
           }`}
         >
-          {isLoading ? (
+          {mutation.isPending ? (
             <div className="flex items-center justify-center space-x-2">
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
               <span>Creando...</span>
