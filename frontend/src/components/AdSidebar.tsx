@@ -12,7 +12,7 @@ export default function AdSidebar({ size = "default" }: AdSidebarProps) {
     } catch (e) {}
   }, [])
 
-  const minHeight = size === "footer" ? 60 : 600
+  const minHeight = size === "footer" ? 60 : 800
 
   return (
     <div style={{ width: "100%" }}>

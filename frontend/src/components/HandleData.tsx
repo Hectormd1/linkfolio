@@ -13,7 +13,7 @@ export default function HandleData({ data }: HandleDataProps) {
   return (
     <div className="flex w-full min-h-screen relative">
       {/* Lateral izquierdo (desktop) */}
-      <div className="hidden lg:block fixed left-0 top-1/2 -translate-y-1/2 w-[180px] z-10">
+      <div className="hidden lg:block fixed left-0 top-1/2 -translate-y-1/2 w-[240px] z-10">
         <div className="sticky top-10">
           <AdSidebar />
         </div>
@@ -75,7 +75,7 @@ export default function HandleData({ data }: HandleDataProps) {
       </div>
 
       {/* Lateral derecho (desktop) */}
-      <div className="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 w-[180px] z-10">
+      <div className="hidden lg:block fixed right-0 top-1/2 -translate-y-1/2 w-[240px] z-10">
         <div className="sticky top-10">
           <AdSidebar />
         </div>
