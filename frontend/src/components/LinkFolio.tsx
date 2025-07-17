@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 import LinkFolioLink from "./LinkFolioLink"
 import { useQueryClient } from "@tanstack/react-query"
 import Header from "./Header"
+import AdSidebar from "./AdSidebar"
 
 type LinkFolioProps = {
   data: User
@@ -66,29 +67,23 @@ export default function LinkFolio({ data }: LinkFolioProps) {
   return (
     <>
       <Header />
-      <div className="bg-gray-100 min-h-screen">
-        <main className="mx-auto max-w-5xl p-10 md:pb-8">
-          <NavigationTabs />
-
-          {/* SOLO PC: visible en md+ */}
-          <div className="justify-end hidden md:flex">
-            <Link
-              className="font-bold text-secondary text-2xl pr-16 pt-4"
-              to={`/${data.handle}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Visita mi perfil: <span className="font-bold text-primary text-2xl pr-2 pt-2">/{data.handle}</span>
-            </Link>
+      <div className="bg-gray-100 min-h-screen w-full">
+        <div className="flex flex-row w-full min-h-screen">
+          {/* Lateral izquierdo */}
+          <div className="hidden xl:flex w-[260px] justify-center items-start">
+            <div className="sticky top-24 mt-32 w-full">
+              <AdSidebar />
+            </div>
           </div>
+          {/* Contenido central */}
+          <div className="flex-1 flex justify-center">
+            <div className="w-full max-w-5xl px-4">
+              <NavigationTabs />
 
-          <div className="flex flex-col md:flex-row gap-10 mt-6">
-            <div className="flex-1 ">
-              <Outlet />
-              {/* SOLO móvil/tablet: visible en <md */}
-              <div className="flex justify-center mt-6 md:hidden">
+              {/* SOLO PC: visible en md+ */}
+              <div className="justify-end hidden md:flex">
                 <Link
-                  className="font-bold text-secondary text-xl pr-2 pt-2"
+                  className="font-bold text-secondary text-2xl pr-16 pt-4"
                   to={`/${data.handle}`}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -96,51 +91,74 @@ export default function LinkFolio({ data }: LinkFolioProps) {
                   Visita mi perfil: <span className="font-bold text-primary text-2xl pr-2 pt-2">/{data.handle}</span>
                 </Link>
               </div>
-            </div>
-            <div className="w-full md:w-96 bg-slate-800 px-5 py-8 space-y-6 rounded-lg">
-              <p className="text-4xl text-center font-bold text-primary">{data.name}</p>
-              {data.image && (
-                <img
-                  src={data.image}
-                  alt="Imagen Perfil"
-                  className="mx-auto max-w-[250px]"
-                />
-              )}
-              <p className="text-lg text-center font-black text-white" style={{ whiteSpace: "pre-line" }}>
-                {data.description}
-              </p>
-              
-              <p className="text-xl text-center font-bold text-secondary" style={{ whiteSpace: "pre-line" }}>
-                📧 {data.email}
-              </p>
 
-              {isLinkFolioView ? (
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={HandleDragEnd}
-                >
-                  <div className="mt-20 flex flex-col gap-5">
-                    <SortableContext
-                      items={enabledLinks}
-                      strategy={verticalListSortingStrategy}
+              <div className="flex flex-col md:flex-row gap-10 mt-6">
+                <div className="flex-1 ">
+                  <Outlet />
+                  {/* SOLO móvil/tablet: visible en <md */}
+                  <div className="flex justify-center mt-6 md:hidden">
+                    <Link
+                      className="font-bold text-secondary text-xl pr-2 pt-2"
+                      to={`/${data.handle}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
                     >
-                      {enabledLinks.map((link) => (
-                        <LinkFolioLink key={link.name} link={link} />
-                      ))}
-                    </SortableContext>
+                      Visita mi perfil: <span className="font-bold text-primary text-2xl pr-2 pt-2">/{data.handle}</span>
+                    </Link>
                   </div>
-                </DndContext>
-              ) : (
-                <div className="mt-20 flex flex-col gap-5">
-                  {enabledLinks.map((link) => (
-                    <LinkFolioLink key={link.name} link={link} disableDnD />
-                  ))}
                 </div>
-              )}
+                <div className="w-full md:w-96 bg-slate-800 px-5 py-8 space-y-6 rounded-lg">
+                  <p className="text-4xl text-center font-bold text-primary">{data.name}</p>
+                  {data.image && (
+                    <img
+                      src={data.image}
+                      alt="Imagen Perfil"
+                      className="mx-auto max-w-[250px]"
+                    />
+                  )}
+                  <p className="text-lg text-center font-black text-white" style={{ whiteSpace: "pre-line" }}>
+                    {data.description}
+                  </p>
+                  
+                  <p className="text-xl text-center font-bold text-secondary" style={{ whiteSpace: "pre-line" }}>
+                    📧 {data.email}
+                  </p>
+
+                  {isLinkFolioView ? (
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={HandleDragEnd}
+                    >
+                      <div className="mt-20 flex flex-col gap-5">
+                        <SortableContext
+                          items={enabledLinks}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {enabledLinks.map((link) => (
+                            <LinkFolioLink key={link.name} link={link} />
+                          ))}
+                        </SortableContext>
+                      </div>
+                    </DndContext>
+                  ) : (
+                    <div className="mt-20 flex flex-col gap-5">
+                      {enabledLinks.map((link) => (
+                        <LinkFolioLink key={link.name} link={link} disableDnD />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-        </main>
+          {/* Lateral derecho */}
+          <div className="hidden xl:flex w-[260px] justify-center items-start">
+            <div className="sticky top-24 mt-32 w-full">
+              <AdSidebar />
+            </div>
+          </div>
+        </div>
       </div>
       <Toaster richColors position="top-right" />
     </>
